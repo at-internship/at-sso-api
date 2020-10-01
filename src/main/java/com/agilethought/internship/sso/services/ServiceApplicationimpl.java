@@ -1,11 +1,13 @@
-package com.resources.services;
+package com.agilethought.internship.sso.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.resources.model.User;
-import com.resources.model.UserId;
+
 import lombok.extern.slf4j.Slf4j;
-import com.resources.repository.RepositoryApplication;
+
+import com.agilethought.internship.sso.model.User;
+import com.agilethought.internship.sso.model.UserId;
+import com.agilethought.internship.sso.repository.RepositoryApplication;
 
 @Service
 @Slf4j

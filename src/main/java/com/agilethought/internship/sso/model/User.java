@@ -1,4 +1,4 @@
-package com.resources.model;
+package com.agilethought.internship.sso.model;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;

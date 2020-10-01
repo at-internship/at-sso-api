@@ -1,4 +1,4 @@
-package com.resources.controller;
+package com.agilethought.internship.sso.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -15,9 +15,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
-import com.resources.model.User;
-import com.resources.model.UserId;
-import com.resources.services.ServiceApplication;
+
+import com.agilethought.internship.sso.model.User;
+import com.agilethought.internship.sso.model.UserId;
+import com.agilethought.internship.sso.services.ServiceApplication;
 
 @Configuration
 @RestController
