@@ -9,6 +9,8 @@ import com.agilethought.internship.sso.model.User;
 import com.agilethought.internship.sso.model.UserId;
 import com.agilethought.internship.sso.repository.RepositoryApplication;
 
+import antlr.collections.List;
+
 @Service
 @Slf4j
 public class ServiceApplicationimpl implements ServiceApplication {
@@ -24,6 +26,11 @@ public class ServiceApplicationimpl implements ServiceApplication {
 		userId.setId(userIdDb);
 		return userId;
 	}
-
 	
+	@Override
+	public java.util.List<User> getUsers() {
+		java.util.List<User> response=repositoryApplication.findAll();
+		log.info("Consulted sucessfully on mongoDB");
+		return response;
+	}
 }
