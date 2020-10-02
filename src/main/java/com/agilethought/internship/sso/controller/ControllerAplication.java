@@ -21,7 +21,7 @@ import com.agilethought.internship.sso.model.User;
 import com.agilethought.internship.sso.model.UserId;
 import com.agilethought.internship.sso.services.ServiceApplication;
 
-import antlr.collections.List;
+import java.util.List;
 
 @Configuration
 @RestController
@@ -54,7 +54,7 @@ public class ControllerAplication {
 	
 	@GetMapping(value="/at-sso-api/api/v1/user", produces = "application/json")
 	@ResponseStatus(value = HttpStatus.OK)
-	public java.util.List<User> getAllUsers(){
+	public List<User> getAllUsers(){
 		return serviceApplication.getUsers();
 	}
 
