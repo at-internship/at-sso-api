@@ -45,14 +45,14 @@ public class ControllerAplication {
 		return converter;
 	}
 	
-	@PostMapping(value = "/at-sso-api/api/v1/user", produces = "application/json")
+	@PostMapping(value = "/api/v1/user", produces = "application/json")
 	@ResponseStatus(value = HttpStatus.CREATED)
 	public UserId createUser(@RequestBody User user) {
 		UserId userId = serviceApplication.createUser(user);
 		return userId;
 	}
 	
-	@GetMapping(value="/at-sso-api/api/v1/user", produces = "application/json")
+	@GetMapping(value="/api/v1/user", produces = "application/json")
 	@ResponseStatus(value = HttpStatus.OK)
 	public List<User> getAllUsers(){
 		return serviceApplication.getUsers();
