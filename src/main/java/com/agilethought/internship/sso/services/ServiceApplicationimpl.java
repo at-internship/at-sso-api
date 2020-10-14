@@ -11,6 +11,8 @@ import com.agilethought.internship.sso.repository.RepositoryApplication;
 
 import java.util.List;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 @Service
 @Slf4j
 public class ServiceApplicationimpl implements ServiceApplication {
@@ -20,11 +22,20 @@ public class ServiceApplicationimpl implements ServiceApplication {
 	
 	@Override
 	public UserId createUser(User user) {
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		String hashedPassword = passwordEncoder.encode(user.getPassword());
+		System.out.println(user.getPassword());
+		user.setPassword(hashedPassword);
+		System.out.println(user.getPassword());
 		String userIdDb = repositoryApplication.save(user).getId();
 		log.info("Created sucessfully on mongoDB");
 		UserId userId = new UserId();
 		userId.setId(userIdDb);
 		return userId;
+	}
+
+	private void encryptPassword(String original) {
+
 	}
 	
 	@Override
