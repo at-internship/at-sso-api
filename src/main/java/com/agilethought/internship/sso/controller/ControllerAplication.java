@@ -19,6 +19,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.agilethought.internship.sso.model.User;
 import com.agilethought.internship.sso.model.UserId;
+import com.agilethought.internship.sso.services.BusinessMethods;
 import com.agilethought.internship.sso.services.ServiceApplication;
 
 import java.util.List;
@@ -43,19 +44,28 @@ public class ControllerAplication {
 		MappingMongoConverter converter = new MappingMongoConverter(dbRefResolver, mongoMappingContext);
 		converter.setTypeMapper(new DefaultMongoTypeMapper(null));
 		return converter;
-	}
+	}	
 	
 	@PostMapping(value = "/api/v1/user", produces = "application/json")
 	@ResponseStatus(value = HttpStatus.CREATED)
 	public UserId createUser(@RequestBody User user) {
-		UserId userId = serviceApplication.createUser(user);
+		
+		UserId userId =  new UserId();
+
+		if (BusinessMethods.notEmptyName(user.getName())) {
+
+			userId = serviceApplication.createUser(user);
+ 	
+		}
+	
 		return userId;
+		 
 	}
+	
 	
 	@GetMapping(value="/api/v1/user", produces = "application/json")
 	@ResponseStatus(value = HttpStatus.OK)
 	public List<User> getAllUsers(){
 		return serviceApplication.getUsers();
 	}
-
 }
