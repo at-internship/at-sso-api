@@ -16,27 +16,25 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
-
-import com.agilethought.internship.sso.model.User;
+import com.agilethought.internship.sso.domain.UserDTO;
 import com.agilethought.internship.sso.model.UserId;
 import com.agilethought.internship.sso.services.ServiceApplication;
-
 import java.util.List;
 
 @Configuration
 @RestController
 public class ControllerAplication {
-	RestTemplate restTemplate; 
-	
+	RestTemplate restTemplate;
+
 	@Autowired
 	private MongoDatabaseFactory mongoDatabaseFactory;
-	
+
 	@Autowired
 	private MongoMappingContext mongoMappingContext;
-	
+
 	@Autowired
 	private ServiceApplication serviceApplication;
-	
+
 	@Bean
 	public MappingMongoConverter mappingMongoConverter() {
 		DbRefResolver dbRefResolver = new DefaultDbRefResolver(mongoDatabaseFactory);
@@ -44,17 +42,17 @@ public class ControllerAplication {
 		converter.setTypeMapper(new DefaultMongoTypeMapper(null));
 		return converter;
 	}
-	
+
 	@PostMapping(value = "/api/v1/user", produces = "application/json")
 	@ResponseStatus(value = HttpStatus.CREATED)
-	public UserId createUser(@RequestBody User user) {
-		UserId userId = serviceApplication.createUser(user);
+	public UserId createUser(@RequestBody UserDTO userDTO) {
+		UserId userId = serviceApplication.createUser(userDTO);
 		return userId;
 	}
-	
-	@GetMapping(value="/api/v1/user", produces = "application/json")
+
+	@GetMapping(value = "/api/v1/user", produces = "application/json")
 	@ResponseStatus(value = HttpStatus.OK)
-	public List<User> getAllUsers(){
+	public List<UserDTO> getAllUsers() {
 		return serviceApplication.getUsers();
 	}
 
