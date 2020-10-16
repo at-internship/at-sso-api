@@ -15,17 +15,18 @@ public class BusinessMethods {
 		
 		//Name Field
 		
-boolean flag = false;
+boolean flag = true;
 		
 
 	if (namefield.isEmpty())
-		flag = true;
+		flag = false;
 	
 	else {
-	flag = false;
+	flag = true;
 	
-	throw new ResponseStatusException(HttpStatus.CONFLICT);
+	throw new ResponseStatusException(HttpStatus.CONFLICT, HttpExceptionMessage.MandatoryName400 );
 	
+
 	}
 		return flag ;
 		}
@@ -41,8 +42,8 @@ boolean flag = false;
          capitalizeWord+=first.toUpperCase()+afterfirst+" ";
      }
      return capitalizeWord.trim();
- 	}
-}
+ }
+ }
 		
 		
 		
@@ -64,20 +65,3 @@ boolean flag = false;
 //		}
 //		return false;
 //		}
-		
-	
-	
-	
- 
- 
-//	try {
-//	
-//	if (namefield.isEmpty())
-//		flag = false;
-//} catch (Exception error) {
-//	
-//	TypeError.httpErrorMessage(HttpStatus.CONFLICT, error, HttpExceptionMessage.MandatoryName400,"/api/v1/user/" );
-//	flag = true;
-//	
-//	throw new ResponseStatusException(HttpStatus.CONFLICT);
-//}
