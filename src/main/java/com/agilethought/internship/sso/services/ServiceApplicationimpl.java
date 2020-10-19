@@ -1,10 +1,6 @@
 package com.agilethought.internship.sso.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoOperations;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 import com.agilethought.internship.sso.model.User;
 import com.agilethought.internship.sso.model.UserId;
 import com.agilethought.internship.sso.repository.RepositoryApplication;
-import com.mongodb.client.MongoClients;
 
 import java.util.List;
 
@@ -21,7 +16,7 @@ import java.util.List;
 public class ServiceApplicationimpl implements ServiceApplication {
 
 	@Autowired
-	private RepositoryApplication repositoryApplication;
+	RepositoryApplication repositoryApplication;
 	
 	@Override
 	public UserId createUser(User user) {
@@ -40,12 +35,10 @@ public class ServiceApplicationimpl implements ServiceApplication {
 	}
 
 	@Override
-	public List<User> getUsersWith(String field,String search) {
-		MongoOperations mongo = new MongoTemplate(MongoClients.create(), "database");
-		Query query = new Query();
-		query.addCriteria(Criteria.where("field").is("search"));
-		List<User> users = mongo.find(query, User.class);
+	public List<User> getUsersByEmail(String email) {
+		List<User> users = repositoryApplication.findUsersByEmail(email);
 		return users;
 	}
+
 
 }// End class

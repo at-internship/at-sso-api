@@ -18,10 +18,13 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import com.agilethought.internship.sso.ATSSOApplication;
+import com.agilethought.internship.sso.exception.BadRequestException;
 import com.agilethought.internship.sso.model.User;
 import com.agilethought.internship.sso.model.UserId;
 import com.agilethought.internship.sso.services.BusinessMethods;
 import com.agilethought.internship.sso.services.ServiceApplication;
+import com.agilethougth.intership.sso.errorhandling.HttpExceptionMessage;
+import com.agilethougth.intership.sso.errorhandling.PathErrorMessage;
 
 import java.util.List;
 
@@ -58,15 +61,15 @@ public class ControllerAplication {
 				if(!BusinessMethods.WrongEmail(user.getEmail())) {
 				    if(!BusinessMethods.EmptyPassword(user.getPassword())) {
 					    if(!BusinessMethods.InvalidStatus(user.getStatus())) {
-					    	if(!BusinessMethods.ExistingEmail(user)) {
-					    		userId = serviceApplication.createUser(user); 						    		
+					    	    List<User> users=serviceApplication.getUsersByEmail(user.getEmail());
+					    	    if(users.isEmpty())
+					    		userId = serviceApplication.createUser(user);
+					    	    else throw new BadRequestException(HttpExceptionMessage.BadRequestMailAlreadyExists,PathErrorMessage.pathApi,HttpStatus.BAD_REQUEST);
 					    	}					    		
 					    }
 					}
 				}
 			}			
-		}
-		
 		else ATSSOApplication.logger.info("Error");
 		return userId;		 
 	}//End createUser	
