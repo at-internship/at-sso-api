@@ -10,7 +10,6 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.HttpStatus;
 
-import com.agilethought.internship.sso.ATSSOApplication;
 import com.agilethought.internship.sso.exception.BadRequestException;
 import com.agilethougth.intership.sso.errorhandling.HttpExceptionMessage;
 import com.agilethougth.intership.sso.errorhandling.PathErrorMessage;
@@ -43,18 +42,11 @@ public static boolean WrongEmail(String email) {
         						+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
         		Matcher mather = pattern.matcher(e);
 
-        		if (mather.find() == true) {
+        		if (mather.find() == true) 
         			response = false; 
-        			String ex=e.substring(e.length() - 3);
-        			ATSSOApplication.logger.info(ex);
-        			if(!ex.equals("com")&&!ex.equals(".es")) {
-        				throw new BadRequestException(HttpExceptionMessage.BadRequestFormatMail,PathErrorMessage.pathApi,HttpStatus.BAD_REQUEST);        				
-        			}
-        		} else {
-        			response=true;
-        			throw new BadRequestException(HttpExceptionMessage.BadRequestFormatMail,PathErrorMessage.pathApi,HttpStatus.BAD_REQUEST);
-        		}        		
-        	}        
+        		else 
+        			throw new BadRequestException(HttpExceptionMessage.BadRequestFormatMail,PathErrorMessage.pathApi,HttpStatus.BAD_REQUEST);	
+        }       
         else
         	{
         	response=true;
@@ -70,8 +62,7 @@ public static boolean ExistingEmail(User user) {
 	Query query = new Query();
 	query.addCriteria(Criteria.where("email").is(user.getEmail()));
 	List<User> users = mongo.find(query, User.class);
-	
-        if (users.isEmpty()) response = false; 
+	        if (users.isEmpty()) response = false; 
         else throw new BadRequestException(HttpExceptionMessage.BadRequestMailAlreadyExists,PathErrorMessage.pathApi,HttpStatus.BAD_REQUEST);	
     return response;
 }

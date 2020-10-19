@@ -48,7 +48,4 @@ public class ServiceApplicationimpl implements ServiceApplication {
 		return users;
 	}
 
-	
-
-	
-}
+}// End class

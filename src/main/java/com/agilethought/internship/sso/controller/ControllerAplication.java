@@ -58,9 +58,9 @@ public class ControllerAplication {
 				if(!BusinessMethods.WrongEmail(user.getEmail())) {
 				    if(!BusinessMethods.EmptyPassword(user.getPassword())) {
 					    if(!BusinessMethods.InvalidStatus(user.getStatus())) {
-					    	//if(!BusinessMethods.ExistingEmail(user)) {
+					    	if(!BusinessMethods.ExistingEmail(user)) {
 					    		userId = serviceApplication.createUser(user); 						    		
-					    	//}					    		
+					    	}					    		
 					    }
 					}
 				}
