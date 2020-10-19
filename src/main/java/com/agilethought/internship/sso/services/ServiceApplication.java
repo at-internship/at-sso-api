@@ -9,5 +9,6 @@ public interface ServiceApplication {
 
 	public UserId createUser(User user);
 	public List<User> getUsers();
+	public List<User> getUsersWith(String field,String search);
 
 }

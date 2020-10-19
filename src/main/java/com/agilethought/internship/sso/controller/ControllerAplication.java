@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import com.agilethought.internship.sso.ATSSOApplication;
 import com.agilethought.internship.sso.model.User;
 import com.agilethought.internship.sso.model.UserId;
 import com.agilethought.internship.sso.services.BusinessMethods;
@@ -51,17 +52,24 @@ public class ControllerAplication {
 	public UserId createUser(@RequestBody User user) {
 		
 		UserId userId =  new UserId();
-
-		if (BusinessMethods.notEmptyName(user.getName())) {
-
-			userId = serviceApplication.createUser(user);
- 	
+		
+		if (!BusinessMethods.EmptyName(user.getName())) {
+			if(!BusinessMethods.EmptyFirstName(user.getFirstName())) {
+				if(!BusinessMethods.WrongEmail(user.getEmail())) {
+				    if(!BusinessMethods.EmptyPassword(user.getPassword())) {
+					    if(!BusinessMethods.InvalidStatus(user.getStatus())) {
+					    	//if(!BusinessMethods.ExistingEmail(user)) {
+					    		userId = serviceApplication.createUser(user); 						    		
+					    	//}					    		
+					    }
+					}
+				}
+			}			
 		}
-	
-		return userId;
-		 
-	}
-	
+		
+		else ATSSOApplication.logger.info("Error");
+		return userId;		 
+	}//End createUser	
 	
 	@GetMapping(value="/api/v1/user", produces = "application/json")
 	@ResponseStatus(value = HttpStatus.OK)
