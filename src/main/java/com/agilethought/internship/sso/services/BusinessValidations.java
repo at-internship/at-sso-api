@@ -10,7 +10,7 @@ import com.agilethought.internship.sso.exception.BadRequestException;
 import com.agilethougth.intership.sso.errorhandling.HttpExceptionMessage;
 import com.agilethougth.intership.sso.errorhandling.PathErrorMessage;
 
-public class BusinessMethods{
+public class BusinessValidations{
 	
 	@Autowired
 	ServiceApplication serviceApplication;

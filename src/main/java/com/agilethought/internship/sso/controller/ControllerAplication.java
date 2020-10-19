@@ -21,7 +21,7 @@ import com.agilethought.internship.sso.ATSSOApplication;
 import com.agilethought.internship.sso.exception.BadRequestException;
 import com.agilethought.internship.sso.model.User;
 import com.agilethought.internship.sso.model.UserId;
-import com.agilethought.internship.sso.services.BusinessMethods;
+import com.agilethought.internship.sso.services.BusinessValidations;
 import com.agilethought.internship.sso.services.ServiceApplication;
 import com.agilethougth.intership.sso.errorhandling.HttpExceptionMessage;
 import com.agilethougth.intership.sso.errorhandling.PathErrorMessage;
@@ -56,11 +56,11 @@ public class ControllerAplication {
 		
 		UserId userId =  new UserId();
 		
-		if (!BusinessMethods.EmptyName(user.getName())) {
-			if(!BusinessMethods.EmptyFirstName(user.getFirstName())) {
-				if(!BusinessMethods.WrongEmail(user.getEmail())) {
-				    if(!BusinessMethods.EmptyPassword(user.getPassword())) {
-					    if(!BusinessMethods.InvalidStatus(user.getStatus())) {
+		if (!BusinessValidations.EmptyName(user.getName())) {
+			if(!BusinessValidations.EmptyFirstName(user.getFirstName())) {
+				if(!BusinessValidations.WrongEmail(user.getEmail())) {
+				    if(!BusinessValidations.EmptyPassword(user.getPassword())) {
+					    if(!BusinessValidations.InvalidStatus(user.getStatus())) {
 					    	    List<User> users=serviceApplication.getUsersByEmail(user.getEmail());
 					    	    if(users.isEmpty())
 					    		userId = serviceApplication.createUser(user);
