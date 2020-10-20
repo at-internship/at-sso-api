@@ -16,32 +16,31 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
-
 import com.agilethought.internship.sso.ATSSOApplication;
 import com.agilethought.internship.sso.exception.BadRequestException;
 import com.agilethought.internship.sso.model.User;
+import com.agilethought.internship.sso.domain.UserDTO;
 import com.agilethought.internship.sso.model.UserId;
 import com.agilethought.internship.sso.services.BusinessValidations;
 import com.agilethought.internship.sso.services.ServiceApplication;
 import com.agilethougth.intership.sso.errorhandling.HttpExceptionMessage;
 import com.agilethougth.intership.sso.errorhandling.PathErrorMessage;
-
 import java.util.List;
 
 @Configuration
 @RestController
 public class ControllerAplication {
-	RestTemplate restTemplate; 
-	
+	RestTemplate restTemplate;
+
 	@Autowired
 	private MongoDatabaseFactory mongoDatabaseFactory;
-	
+
 	@Autowired
 	private MongoMappingContext mongoMappingContext;
-	
+
 	@Autowired
 	private ServiceApplication serviceApplication;
-	
+
 	@Bean
 	public MappingMongoConverter mappingMongoConverter() {
 		DbRefResolver dbRefResolver = new DefaultDbRefResolver(mongoDatabaseFactory);
@@ -76,7 +75,7 @@ public class ControllerAplication {
 	
 	@GetMapping(value="/api/v1/user", produces = "application/json")
 	@ResponseStatus(value = HttpStatus.OK)
-	public List<User> getAllUsers(){
+	public List<UserDTO> getAllUsers() {
 		return serviceApplication.getUsers();
 	}
 }
