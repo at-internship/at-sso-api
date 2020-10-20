@@ -10,7 +10,6 @@ import com.agilethought.internship.sso.model.User;
 import com.agilethought.internship.sso.model.UserId;
 import com.agilethought.internship.sso.repository.RepositoryApplication;
 import java.util.List;
-
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Service
@@ -39,7 +38,7 @@ public class ServiceApplicationimpl implements ServiceApplication {
 		userId.setId(userIdDb);
 		return userId;
 	}
-
+	
 	@Override
 	public List<UserDTO> getUsers() {
 		List<User> response = repositoryApplication.findAll();
@@ -47,3 +46,11 @@ public class ServiceApplicationimpl implements ServiceApplication {
 		return userTransformer.listTransformer(response);
 	}
 }
+
+	@Override
+	public List<User> getUsersByEmail(String email) {
+		List<User> users = repositoryApplication.findUsersByEmail(email);
+		return users;
+	}
+
+}// End class
