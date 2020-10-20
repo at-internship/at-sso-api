@@ -5,15 +5,17 @@ import java.util.List;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
+
+import com.agilethought.internship.sso.domain.UserDTO;
 import com.agilethought.internship.sso.model.User;
 
 @Repository
 public interface RepositoryApplication extends MongoRepository<User, String> {
 
 	List<User> findAll();
-	User findById();
+	UserDTO findById();
 	
 	@Query("{ 'email' : ?0 }")
-	List<User> findUsersByEmail(String email);
+	List<UserDTO> findUsersByEmail(String email);
 
 }

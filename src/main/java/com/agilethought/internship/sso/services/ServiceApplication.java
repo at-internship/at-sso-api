@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ServiceApplication {
 
-	public List<User> getUsersByEmail(String email) ;
+	public List<UserDTO> getUsersByEmail(String email) ;
 	public UserId createUser(UserDTO userDTO);
 	public List<UserDTO> getUsers();
 }

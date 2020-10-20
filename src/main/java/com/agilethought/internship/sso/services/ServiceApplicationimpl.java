@@ -45,11 +45,10 @@ public class ServiceApplicationimpl implements ServiceApplication {
 		log.info("Consulted sucessfully on mongoDB");
 		return userTransformer.listTransformer(response);
 	}
-}
 
 	@Override
-	public List<User> getUsersByEmail(String email) {
-		List<User> users = repositoryApplication.findUsersByEmail(email);
+	public List<UserDTO> getUsersByEmail(String email) {
+		List<UserDTO> users = repositoryApplication.findUsersByEmail(email);
 		return users;
 	}
 

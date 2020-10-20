@@ -51,18 +51,18 @@ public class ControllerAplication {
 	
 	@PostMapping(value = "/api/v1/user", produces = "application/json")
 	@ResponseStatus(value = HttpStatus.CREATED)
-	public UserId createUser(@RequestBody User user) {
+	public UserId createUser(@RequestBody UserDTO userDTO) {
 		
 		UserId userId =  new UserId();
 		
-		if (!BusinessValidations.EmptyName(user.getName())) {
-			if(!BusinessValidations.EmptyFirstName(user.getFirstName())) {
-				if(!BusinessValidations.WrongEmail(user.getEmail())) {
-				    if(!BusinessValidations.EmptyPassword(user.getPassword())) {
-					    if(!BusinessValidations.InvalidStatus(user.getStatus())) {
-					    	    List<User> users=serviceApplication.getUsersByEmail(user.getEmail());
+		if (!BusinessValidations.EmptyName(userDTO.getName())) {
+			if(!BusinessValidations.EmptyFirstName(userDTO.getFirstName())) {
+				if(!BusinessValidations.WrongEmail(userDTO.getEmail())) {
+				    if(!BusinessValidations.EmptyPassword(userDTO.getPassword())) {
+					    if(!BusinessValidations.InvalidStatus(userDTO.getStatus())) {
+					    	    List<UserDTO> users=serviceApplication.getUsersByEmail(userDTO.getEmail());
 					    	    if(users.isEmpty())
-					    		userId = serviceApplication.createUser(user);
+					    		userId = serviceApplication.createUser(userDTO);
 					    	    else throw new BadRequestException(HttpExceptionMessage.BadRequestMailAlreadyExists,PathErrorMessage.pathApi,HttpStatus.BAD_REQUEST);
 					    	}					    		
 					    }
