@@ -60,6 +60,7 @@ public class ControllerAplication {
 				if(!BusinessValidations.WrongEmail(userDTO.getEmail())) {
 				    if(!BusinessValidations.EmptyPassword(userDTO.getPassword())) {
 					    if(!BusinessValidations.InvalidStatus(userDTO.getStatus())) {
+					    		userDTO.setEmail(userDTO.getEmail().toLowerCase().trim());
 					    	    List<UserDTO> users=serviceApplication.getUsersByEmail(userDTO.getEmail());
 					    	    if(users.isEmpty())
 					    		userId = serviceApplication.createUser(userDTO);
