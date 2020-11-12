@@ -60,8 +60,9 @@ public class ControllerAplication {
 				if(!BusinessValidations.WrongEmail(userDTO.getEmail())) {
 				    if(!BusinessValidations.EmptyPassword(userDTO.getPassword())) {
 					    if(!BusinessValidations.InvalidStatus(userDTO.getStatus())) {
-					    		userDTO.setEmail(userDTO.getEmail().toLowerCase().trim());
-					    	    List<UserDTO> users=serviceApplication.getUsersByEmail(userDTO.getEmail());
+					    		String e=userDTO.getEmail().toLowerCase().trim();
+					    		userDTO.setEmail(e);
+					    	    List<UserDTO> users=serviceApplication.getUsersByEmail(e);
 					    	    if(users.isEmpty())
 					    		userId = serviceApplication.createUser(userDTO);
 					    	    else throw new BadRequestException(HttpExceptionMessage.BadRequestMailAlreadyExists,PathErrorMessage.pathApi,HttpStatus.BAD_REQUEST);
