@@ -1,5 +1,6 @@
 package com.agilethought.internship.sso.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,6 +30,7 @@ import java.util.List;
 
 @Configuration
 @RestController
+@Slf4j
 public class ControllerAplication {
 	RestTemplate restTemplate;
 
@@ -46,14 +48,16 @@ public class ControllerAplication {
 		DbRefResolver dbRefResolver = new DefaultDbRefResolver(mongoDatabaseFactory);
 		MappingMongoConverter converter = new MappingMongoConverter(dbRefResolver, mongoMappingContext);
 		converter.setTypeMapper(new DefaultMongoTypeMapper(null));
+		log.info("ControllerAplication.mappingMongoConverter - mappingMongoConverter was successfull", converter);
 		return converter;
 	}	
 	
 	@PostMapping(value = "/api/v1/user", produces = "application/json")
 	@ResponseStatus(value = HttpStatus.CREATED)
 	public UserId createUser(@RequestBody UserDTO userDTO) {
-		
+		log.info("ControllerAplication.createUser - user request: {}", userDTO);
 		UserId userId =  new UserId();
+		log.info("ControllerAplication.createUser - userid created: {}", userId);
 		
 		if (!BusinessValidations.EmptyName(userDTO.getName())) {
 			if(!BusinessValidations.EmptyFirstName(userDTO.getFirstName())) {
@@ -71,12 +75,14 @@ public class ControllerAplication {
 				}
 			}			
 		else ATSSOApplication.logger.info("Error");
+		log.info("ControllerAplication.createUser - POST operation was successful: {}", userId);
 		return userId;		 
 	}//End createUser	
 	
 	@GetMapping(value="/api/v1/user", produces = "application/json")
 	@ResponseStatus(value = HttpStatus.OK)
 	public List<UserDTO> getAllUsers() {
+		log.info("ControllerAplication.getAllUsers - Calling get operation");
 		return serviceApplication.getUsers();
 	}
 }
