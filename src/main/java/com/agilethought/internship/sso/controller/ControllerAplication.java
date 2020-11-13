@@ -55,7 +55,7 @@ public class ControllerAplication {
 	@PostMapping(value = "/api/v1/user", produces = "application/json")
 	@ResponseStatus(value = HttpStatus.CREATED)
 	public UserId createUser(@RequestBody UserDTO userDTO) {
-		log.info("ControllerAplication.createUser - user request: {}", userDTO);
+		log.info("ControllerAplication.createUser - user requested: {}", userDTO);
 		UserId userId =  new UserId();
 		log.info("ControllerAplication.createUser - userid created: {}", userId);
 		

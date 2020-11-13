@@ -35,7 +35,7 @@ public class ServiceApplicationimpl implements ServiceApplication {
 		log.info("ServiceApplicationimpl.createUser - users transformed: {}", user);
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		String userIdDb = repositoryApplication.save(user).getId();
-		log.info("ServiceApplicationimpl.createUser- User saved with id: {}", user.getId());
+		log.info("ServiceApplicationimpl.createUser- User saved  successfully with id: {}", user.getId());
 		UserId userId = new UserId();
 		userId.setId(userIdDb);
 		log.info("ServiceApplicationimpl.createUser- User created successfully on mongoDB: {}", userId);
@@ -46,13 +46,13 @@ public class ServiceApplicationimpl implements ServiceApplication {
 	public List<UserDTO> getUsers() {
 		log.info("ServiceApplicationimpl.getUsers - Before getting all the users");
 		List<User> response = repositoryApplication.findAll();
-		log.info("ServiceApplicationimpl.getUsers -  Consulted sucessfuly on mongoDB: {}", response);
+		log.info("ServiceApplicationimpl.getUsers -  Consulted successfully on mongoDB: {}", response);
 		return userTransformer.listTransformer(response);
 	}
 
 	@Override
 	public List<UserDTO> getUsersByEmail(String email) {
-		log.info("ServiceApplicationimpl.getUsers - email exists");
+		log.info("ServiceApplicationimpl.getUsers - Searching users by email");
 		List<UserDTO> users = repositoryApplication.findUsersByEmail(email);
 		log.info("ServiceApplicationimpl.getUsersByEmail - getUsersByEmail operation was successful: {}", users);
 		return users;
