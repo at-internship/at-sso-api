@@ -50,36 +50,38 @@ public class ControllerAplication {
 		converter.setTypeMapper(new DefaultMongoTypeMapper(null));
 		log.info("ControllerAplication.mappingMongoConverter - mappingMongoConverter was successfull", converter);
 		return converter;
-	}	
-	
+	}
+
 	@PostMapping(value = "/api/v1/user", produces = "application/json")
 	@ResponseStatus(value = HttpStatus.CREATED)
 	public UserId createUser(@RequestBody UserDTO userDTO) {
 		log.info("ControllerAplication.createUser - user requested: {}", userDTO);
 		UserId userId =  new UserId();
 		log.info("ControllerAplication.createUser - userid created: {}", userId);
-		
+
 		if (!BusinessValidations.EmptyName(userDTO.getName())) {
 			if(!BusinessValidations.EmptyFirstName(userDTO.getFirstName())) {
 				if(!BusinessValidations.WrongEmail(userDTO.getEmail())) {
-				    if(!BusinessValidations.EmptyPassword(userDTO.getPassword())) {
-					    if(!BusinessValidations.InvalidStatus(userDTO.getStatus())) {
-					    		String e=userDTO.getEmail().toLowerCase().trim();
-					    		userDTO.setEmail(e);
-					    	    List<UserDTO> users=serviceApplication.getUsersByEmail(e);
-					    	    if(users.isEmpty())
-					    		userId = serviceApplication.createUser(userDTO);
-					    	    else throw new BadRequestException(HttpExceptionMessage.BadRequestMailAlreadyExists,PathErrorMessage.pathApi,HttpStatus.BAD_REQUEST);
-					    	}					    		
-					    }
+					if(!BusinessValidations.EmptyPassword(userDTO.getPassword())) {
+						if(BusinessValidations.FilterCharacters(userDTO.getPassword())) {
+							if(!BusinessValidations.InvalidStatus(userDTO.getStatus())) {
+								String e = userDTO.getEmail().toLowerCase().trim();
+								userDTO.setEmail(e);
+								List<UserDTO> users = serviceApplication.getUsersByEmail(e);
+								if (users.isEmpty())
+									userId = serviceApplication.createUser(userDTO);
+								else throw new BadRequestException(HttpExceptionMessage.BadRequestMailAlreadyExists,PathErrorMessage.pathApi,HttpStatus.BAD_REQUEST);
+							}
+						}
 					}
 				}
-			}			
+			}
+		}
 		else ATSSOApplication.logger.info("Error");
 		log.info("ControllerAplication.createUser - POST operation was successful: {}", userId);
-		return userId;		 
-	}//End createUser	
-	
+		return userId;
+	}//End createUser
+
 	@GetMapping(value="/api/v1/user", produces = "application/json")
 	@ResponseStatus(value = HttpStatus.OK)
 	public List<UserDTO> getAllUsers() {
