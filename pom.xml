@@ -20,9 +20,6 @@
 	</properties>
 
 	<dependencies>
-	
-	
-	
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-mongodb</artifactId>
@@ -109,47 +106,47 @@
 
 	<build>
 		<plugins>
-				<plugin>
-    <groupId>org.jacoco</groupId>
-    <artifactId>jacoco-maven-plugin</artifactId>
-    <version>0.8.2</version>
-    <executions>
-    
-    <execution>
-    <id>jacoco-check</id>
-    <goals>
-        <goal>check</goal>
-    </goals>
-    <configuration>
-        <rules>
-            <rule>
-                <element>PACKAGE</element>
-                <limits>
-                    <limit>
-                        <counter>LINE</counter>
-                        <value>COVEREDRATIO</value>
-                        <minimum>0.50</minimum>
-                    </limit>
-                </limits>
-            </rule>
-        </rules>
-    </configuration>
-</execution>
+			<plugin>
+			    <groupId>org.jacoco</groupId>
+			    <artifactId>jacoco-maven-plugin</artifactId>
+			    <version>0.8.2</version>
+			    <executions>
 
-        <execution>
-            <goals>
-                <goal>prepare-agent</goal>
-            </goals>
-        </execution>
-        <execution>
-            <id>report</id>
-            <phase>prepare-package</phase>
-            <goals>
-                <goal>report</goal>
-            </goals>
-        </execution>
-    </executions>
-</plugin>
+			    <execution>
+			    <id>jacoco-check</id>
+			    <goals>
+				<goal>check</goal>
+			    </goals>
+			    <configuration>
+				<rules>
+				    <rule>
+					<element>PACKAGE</element>
+					<limits>
+					    <limit>
+						<counter>LINE</counter>
+						<value>COVEREDRATIO</value>
+						<minimum>0.50</minimum>
+					    </limit>
+					</limits>
+				    </rule>
+				</rules>
+			    </configuration>
+			</execution>
+
+				<execution>
+				    <goals>
+					<goal>prepare-agent</goal>
+				    </goals>
+				</execution>
+				<execution>
+				    <id>report</id>
+				    <phase>prepare-package</phase>
+				    <goals>
+					<goal>report</goal>
+				    </goals>
+				</execution>
+			    </executions>
+			</plugin>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
