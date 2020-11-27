@@ -13,4 +13,5 @@ public class HttpExceptionMessage {
 	public static final String BAD_REQUEST_EMPTY_NULL_MAIL = "Mail is required.";
 	public static final String BAD_REQUEST_FORMAT_MAIL = "Format required: {Name}@{domain].{com,es}.";
 	public static final String BAD_REQUEST_MAIL_ALREADY_EXISTS = "Mail already exists.";
+	public static final String FILTER_CHARACTERS = "Characters 'Space' and 'Line Break' are invalids";
 }

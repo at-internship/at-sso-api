@@ -26,7 +26,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
 		String path = request.getDescription(false).substring(4);
 		return buildResponseEntity(
-				new ApiError(HttpStatus.BAD_REQUEST, 400, HttpExceptionMessage.BadRequestJSON, path));
+				new ApiError(HttpStatus.BAD_REQUEST, 400, HttpExceptionMessage.BAD_REQUEST_JSON, path));
 	}
 
 	private ResponseEntity<Object> buildResponseEntity(ApiError apiError) {
