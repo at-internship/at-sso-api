@@ -15,8 +15,8 @@ public class BusinessValidations {
 		if (firstname != null && !firstname.equals(""))
 			response = false;
 		else
-			throw new BadRequestException(HttpExceptionMessage.BadRequestEmptyNullFirstName, PathErrorMessage.pathApi,
-					HttpStatus.BAD_REQUEST);
+			throw new BadRequestException(HttpExceptionMessage.BAD_REQUEST_EMPTY_NULL_FIRST_NAME,
+					PathErrorMessage.pathApi, HttpStatus.BAD_REQUEST);
 		return response;
 	}
 
@@ -25,8 +25,8 @@ public class BusinessValidations {
 		if (lastname != null && !lastname.equals(""))
 			response = false;
 		else
-			throw new BadRequestException(HttpExceptionMessage.BadRequestEmptyNullLastName, PathErrorMessage.pathApi,
-					HttpStatus.BAD_REQUEST);
+			throw new BadRequestException(HttpExceptionMessage.BAD_REQUEST_EMPTY_NULL_LAST_NAME,
+					PathErrorMessage.pathApi, HttpStatus.BAD_REQUEST);
 		return response;
 	}
 
@@ -40,10 +40,10 @@ public class BusinessValidations {
 			if (mather.find() == true)
 				response = false;
 			else
-				throw new BadRequestException(HttpExceptionMessage.BadRequestFormatMail, PathErrorMessage.pathApi,
+				throw new BadRequestException(HttpExceptionMessage.BAD_REQUEST_FORMAT_MAIL, PathErrorMessage.pathApi,
 						HttpStatus.BAD_REQUEST);
 		} else {
-			throw new BadRequestException(HttpExceptionMessage.BadRequestEmptyNullMail, PathErrorMessage.pathApi,
+			throw new BadRequestException(HttpExceptionMessage.BAD_REQUEST_EMPTY_NULL_MAIL, PathErrorMessage.pathApi,
 					HttpStatus.BAD_REQUEST);
 		}
 		return response;
@@ -54,8 +54,8 @@ public class BusinessValidations {
 		if (password != null && !password.equals(""))
 			response = false;
 		else
-			throw new BadRequestException(HttpExceptionMessage.BadRequestEmptyNullPassword, PathErrorMessage.pathApi,
-					HttpStatus.BAD_REQUEST);
+			throw new BadRequestException(HttpExceptionMessage.BAD_REQUEST_EMPTY_NULL_PASSWORD,
+					PathErrorMessage.pathApi, HttpStatus.BAD_REQUEST);
 		return response;
 	}
 

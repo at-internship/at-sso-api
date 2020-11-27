@@ -13,7 +13,6 @@ import com.agilethought.internship.sso.model.UserId;
 import com.agilethought.internship.sso.repository.RepositoryApplication;
 import com.agilethougth.intership.sso.errorhandling.HttpExceptionMessage;
 import com.agilethougth.intership.sso.errorhandling.PathErrorMessage;
-
 import java.util.List;
 
 @Service
@@ -31,16 +30,14 @@ public class ServiceApplicationimpl implements ServiceApplication {
 
 	@Override
 	public UserId createUser(UserDTO userDTO) {
-		if (userDTO.getId() != null)
-			log.info("ServiceApplicationimpl.createUser - id exists");
-		userDTO.setId(null);
+		UserId userId = new UserId();
 
 		BusinessValidations.validate(userDTO);
-		PopulateFields.populate(userDTO);
+		userDTO = PopulateFields.populate(userDTO);
 
 		if (repositoryApplication.existsByEmail(userDTO.getEmail().toLowerCase().trim())) {
-			throw new BadRequestException(HttpExceptionMessage.BadRequestMailAlreadyExists, PathErrorMessage.pathApi,
-					HttpStatus.BAD_REQUEST);
+			throw new BadRequestException(HttpExceptionMessage.BAD_REQUEST_MAIL_ALREADY_EXISTS,
+					PathErrorMessage.pathApi, HttpStatus.BAD_REQUEST);
 		}
 
 		User user = userTransformer.transformer(userDTO);
@@ -48,7 +45,6 @@ public class ServiceApplicationimpl implements ServiceApplication {
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		String userIdDb = repositoryApplication.save(user).getId();
 		log.info("ServiceApplicationimpl.createUser- User saved  successfully with id: {}", user.getId());
-		UserId userId = new UserId();
 		userId.setId(userIdDb);
 		log.info("ServiceApplicationimpl.createUser- User created successfully on mongoDB: {}", userId);
 		return userId;
