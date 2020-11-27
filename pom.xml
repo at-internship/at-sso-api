@@ -110,6 +110,14 @@
 			    <groupId>org.jacoco</groupId>
 			    <artifactId>jacoco-maven-plugin</artifactId>
 			    <version>0.8.2</version>
+			     <configuration> 
+			        <excludes> 
+			         <exclude>com.agilethought.internship.sso.model</exclude> 
+			         <exclude>com.agilethought.internship.sso.domain</exclude> 
+			         <exclude>com.agilethought.internship.sso.swagger</exclude> 
+			         <exclude>com.agilethought.internship.sso.errorhandling</exclude> 
+			        </excludes> 
+			       </configuration> 
 			    <executions>
 				<execution>
 				    <goals>
