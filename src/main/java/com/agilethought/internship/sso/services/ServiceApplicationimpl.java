@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
-import com.agilethought.internship.sso.ATSSOApplication;
 import com.agilethought.internship.sso.domain.UserDTO;
 import com.agilethought.internship.sso.exception.BadRequestException;
 import com.agilethought.internship.sso.mapper.UserTransformer;
@@ -14,6 +13,7 @@ import com.agilethought.internship.sso.model.UserId;
 import com.agilethought.internship.sso.repository.RepositoryApplication;
 import com.agilethougth.intership.sso.errorhandling.HttpExceptionMessage;
 import com.agilethougth.intership.sso.errorhandling.PathErrorMessage;
+
 import java.util.List;
 
 @Service
@@ -31,34 +31,26 @@ public class ServiceApplicationimpl implements ServiceApplication {
 
 	@Override
 	public UserId createUser(UserDTO userDTO) {
-		UserId userId = new UserId();
-		userDTO.setStatus(PopulateFields.StatusPopulation(userDTO.getStatus()));
-		if (!BusinessValidations.emptyNullFirstName(userDTO.getFirstName())) {
-			if (!BusinessValidations.emptyNullLastName(userDTO.getLastName())) {
-				userDTO.setName(PopulateFields.NamePopulation(userDTO.getName(), userDTO.getFirstName(),
-						userDTO.getLastName()));
-				if (!BusinessValidations.emptyNullWrongEmail(userDTO.getEmail())) {
-					if (!BusinessValidations.emptyNullPassword(userDTO.getPassword())) {
-						List<UserDTO> users = repositoryApplication
-								.findUsersByEmail(userDTO.getEmail().toLowerCase().trim());
-						if (users.isEmpty()) {
-							if (userDTO.getId() != null)
-								userDTO.setId(null);
-							User user = userTransformer.transformer(userDTO);
-							user.setPassword(passwordEncoder.encode(user.getPassword()));
-							String userIdDb = repositoryApplication.save(user).getId();
-							log.info("Created sucessfully on mongoDB");
-							userId.setId(userIdDb);
-							return userId;
-						} else
-							throw new BadRequestException(HttpExceptionMessage.BadRequestMailAlreadyExists,
-									PathErrorMessage.pathApi, HttpStatus.BAD_REQUEST);
-					}
-				}
-			} else {
-				ATSSOApplication.logger.info("Error");
-			}
+		if (userDTO.getId() != null)
+			log.info("ServiceApplicationimpl.createUser - id exists");
+		userDTO.setId(null);
+
+		BusinessValidations.validate(userDTO);
+		PopulateFields.populate(userDTO);
+
+		if (repositoryApplication.existsByEmail(userDTO.getEmail().toLowerCase().trim())) {
+			throw new BadRequestException(HttpExceptionMessage.BadRequestMailAlreadyExists, PathErrorMessage.pathApi,
+					HttpStatus.BAD_REQUEST);
 		}
+
+		User user = userTransformer.transformer(userDTO);
+		log.info("ServiceApplicationimpl.createUser - users transformed: {}", user);
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
+		String userIdDb = repositoryApplication.save(user).getId();
+		log.info("ServiceApplicationimpl.createUser- User saved  successfully with id: {}", user.getId());
+		UserId userId = new UserId();
+		userId.setId(userIdDb);
+		log.info("ServiceApplicationimpl.createUser- User created successfully on mongoDB: {}", userId);
 		return userId;
 	}
 

@@ -1,8 +1,10 @@
 package com.agilethought.internship.sso.services;
 
+import com.agilethought.internship.sso.domain.UserDTO;
+
 public class PopulateFields {
 
-	public static String NamePopulation(String name, String firstName, String lastName) {
+	private static String NamePopulation(String name, String firstName, String lastName) {
 
 		if (name != null && !name.isEmpty()) {
 			return name;
@@ -11,8 +13,8 @@ public class PopulateFields {
 		}
 	}
 
-	public static Integer StatusPopulation(Integer status) {
-		
+	private static Integer StatusPopulation(Integer status) {
+
 		if (status != null && status == 0) {
 			return status;
 		} else {
@@ -20,4 +22,9 @@ public class PopulateFields {
 		}
 	}
 
+	public static void populate(UserDTO userDTO) {
+		userDTO.setStatus(PopulateFields.StatusPopulation(userDTO.getStatus()));
+		userDTO.setName(
+				PopulateFields.NamePopulation(userDTO.getName(), userDTO.getFirstName(), userDTO.getLastName()));
+	}
 }
