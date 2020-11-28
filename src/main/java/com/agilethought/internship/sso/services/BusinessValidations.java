@@ -13,7 +13,7 @@ public class BusinessValidations {
 	private static void emptyNullFirstName(String firstname) {
 		if (firstname == null || firstname.equals("")) {
 			throw new BadRequestException(HttpExceptionMessage.BAD_REQUEST_EMPTY_NULL_FIRST_NAME,
-					PathErrorMessage.pathApi, HttpStatus.BAD_REQUEST);
+					PathErrorMessage.PATH_API, HttpStatus.BAD_REQUEST);
 		}
 
 	}
@@ -21,13 +21,13 @@ public class BusinessValidations {
 	private static void emptyNullLastName(String lastname) {
 		if (lastname == null || lastname.equals("")) {
 			throw new BadRequestException(HttpExceptionMessage.BAD_REQUEST_EMPTY_NULL_LAST_NAME,
-					PathErrorMessage.pathApi, HttpStatus.BAD_REQUEST);
+					PathErrorMessage.PATH_API, HttpStatus.BAD_REQUEST);
 		}
 	}
 
 	private static void emptyNullWrongEmail(String email) {
 		if (email == null || email.equals("")) {
-			throw new BadRequestException(HttpExceptionMessage.BAD_REQUEST_EMPTY_NULL_MAIL, PathErrorMessage.pathApi,
+			throw new BadRequestException(HttpExceptionMessage.BAD_REQUEST_EMPTY_NULL_MAIL, PathErrorMessage.PATH_API,
 					HttpStatus.BAD_REQUEST);
 		}
 		else {
@@ -36,7 +36,7 @@ public class BusinessValidations {
 			Matcher mather = pattern.matcher(email);
 
 			if (mather.find() == false) {
-				throw new BadRequestException(HttpExceptionMessage.BAD_REQUEST_FORMAT_MAIL, PathErrorMessage.pathApi,
+				throw new BadRequestException(HttpExceptionMessage.BAD_REQUEST_FORMAT_MAIL, PathErrorMessage.PATH_API,
 						HttpStatus.BAD_REQUEST);
 			}
 		}
@@ -45,12 +45,12 @@ public class BusinessValidations {
 	private static void emptyNullPassword(String password) {
 		if (password == null || password.equals(""))
 			throw new BadRequestException(HttpExceptionMessage.BAD_REQUEST_EMPTY_NULL_PASSWORD,
-					PathErrorMessage.pathApi, HttpStatus.BAD_REQUEST);
+					PathErrorMessage.PATH_API, HttpStatus.BAD_REQUEST);
 	}
 
-public static void filterCharacters(String password) {
+	private static void filterCharacters(String password) {
         if (password.contains(" ") || password.contains("\n"))
-        throw new BadRequestException(HttpExceptionMessage.FILTER_CHARACTERS, PathErrorMessage.pathApi, HttpStatus.BAD_REQUEST);
+        throw new BadRequestException(HttpExceptionMessage.FILTER_CHARACTERS, PathErrorMessage.PATH_API, HttpStatus.BAD_REQUEST);
     }
 
 
