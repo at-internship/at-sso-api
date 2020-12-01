@@ -10,65 +10,58 @@ import com.agilethougth.intership.sso.errorhandling.PathErrorMessage;
 
 public class BusinessValidations {
 
-	private static boolean emptyNullFirstName(String firstname) {
-		boolean response = true;
-		if (firstname != null && !firstname.equals(""))
-			response = false;
-		else
+	private static void emptyNullFirstName(String firstname) {
+		if (firstname == null || firstname.equals("")) {
 			throw new BadRequestException(HttpExceptionMessage.BAD_REQUEST_EMPTY_NULL_FIRST_NAME,
-					PathErrorMessage.pathApi, HttpStatus.BAD_REQUEST);
-		return response;
+					PathErrorMessage.PATH_API, HttpStatus.BAD_REQUEST);
+		}
+
 	}
 
-	private static boolean emptyNullLastName(String lastname) {
-		boolean response = true;
-		if (lastname != null && !lastname.equals(""))
-			response = false;
-		else
+	private static void emptyNullLastName(String lastname) {
+		if (lastname == null || lastname.equals("")) {
 			throw new BadRequestException(HttpExceptionMessage.BAD_REQUEST_EMPTY_NULL_LAST_NAME,
-					PathErrorMessage.pathApi, HttpStatus.BAD_REQUEST);
-		return response;
+					PathErrorMessage.PATH_API, HttpStatus.BAD_REQUEST);
+		}
 	}
 
-	private static boolean emptyNullWrongEmail(String email) {
-		boolean response = true;
-		if (email != null && !email.equals("")) {
+	private static void emptyNullWrongEmail(String email) {
+		if (email == null || email.equals("")) {
+			throw new BadRequestException(HttpExceptionMessage.BAD_REQUEST_EMPTY_NULL_MAIL, PathErrorMessage.PATH_API,
+					HttpStatus.BAD_REQUEST);
+		}
+		else {
 			Pattern pattern = Pattern.compile(
 					"^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
 			Matcher mather = pattern.matcher(email);
 
-			if (mather.find() == true)
-				response = false;
-			else
-				throw new BadRequestException(HttpExceptionMessage.BAD_REQUEST_FORMAT_MAIL, PathErrorMessage.pathApi,
+			if (mather.find() == false) {
+				throw new BadRequestException(HttpExceptionMessage.BAD_REQUEST_FORMAT_MAIL, PathErrorMessage.PATH_API,
 						HttpStatus.BAD_REQUEST);
-		} else {
-			throw new BadRequestException(HttpExceptionMessage.BAD_REQUEST_EMPTY_NULL_MAIL, PathErrorMessage.pathApi,
-					HttpStatus.BAD_REQUEST);
-		}
-		return response;
-	}
-
-	private static boolean emptyNullPassword(String password) {
-		boolean response = true;
-		if (password != null && !password.equals(""))
-			response = false;
-		else
-			throw new BadRequestException(HttpExceptionMessage.BAD_REQUEST_EMPTY_NULL_PASSWORD,
-					PathErrorMessage.pathApi, HttpStatus.BAD_REQUEST);
-		return response;
-	}
-
-	public static void validate(UserDTO userDTO) {
-		if (!emptyNullFirstName(userDTO.getFirstName())) {
-			if (!emptyNullLastName(userDTO.getLastName())) {
-				if (!emptyNullWrongEmail(userDTO.getEmail())) {
-					if (!emptyNullPassword(userDTO.getPassword())) {
-
-					}
-				}
 			}
 		}
+	}
+
+	private static void emptyNullPassword(String password) {
+		if (password == null || password.equals(""))
+			throw new BadRequestException(HttpExceptionMessage.BAD_REQUEST_EMPTY_NULL_PASSWORD,
+					PathErrorMessage.PATH_API, HttpStatus.BAD_REQUEST);
+	}
+
+	private static void filterCharacters(String password) {
+        if (password.contains(" ") || password.contains("\n"))
+        throw new BadRequestException(HttpExceptionMessage.FILTER_CHARACTERS, PathErrorMessage.PATH_API, HttpStatus.BAD_REQUEST);
+    }
+
+
+	public static void validate(UserDTO userDTO) {
+
+		emptyNullFirstName(userDTO.getFirstName());
+		emptyNullLastName(userDTO.getLastName());
+		emptyNullWrongEmail(userDTO.getEmail());
+		emptyNullPassword(userDTO.getPassword());
+		filterCharacters(userDTO.getPassword());
+
 	}
 
 }// End class
