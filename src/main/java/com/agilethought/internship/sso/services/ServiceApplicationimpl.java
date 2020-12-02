@@ -43,6 +43,7 @@ public class ServiceApplicationimpl implements ServiceApplication {
 		User user = userTransformer.transformer(userDTO);
 		log.info("ServiceApplicationimpl.createUser - users transformed: {}", user);
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
+		user.setEmail(user.getEmail().toLowerCase().trim());
 		String userIdDb = repositoryApplication.save(user).getId();
 		log.info("ServiceApplicationimpl.createUser- User saved  successfully with id: {}", user.getId());
 		userId.setId(userIdDb);
