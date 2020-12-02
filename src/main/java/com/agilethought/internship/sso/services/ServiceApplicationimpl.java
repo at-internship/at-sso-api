@@ -37,7 +37,7 @@ public class ServiceApplicationimpl implements ServiceApplication {
 
 		if (repositoryApplication.existsByEmail(userDTO.getEmail().toLowerCase().trim())) {
 			throw new BadRequestException(HttpExceptionMessage.BAD_REQUEST_MAIL_ALREADY_EXISTS,
-					PathErrorMessage.pathApi, HttpStatus.BAD_REQUEST);
+					PathErrorMessage.PATH_API, HttpStatus.BAD_REQUEST);
 		}
 
 		User user = userTransformer.transformer(userDTO);
@@ -65,5 +65,4 @@ public class ServiceApplicationimpl implements ServiceApplication {
 		log.info("ServiceApplicationimpl.getUsersByEmail - getUsersByEmail operation was successful: {}", users);
 		return users;
 	}
-
 }// End class
