@@ -97,10 +97,42 @@
 			<artifactId>springfox-swagger-ui</artifactId>
 			<version>2.9.2</version>
 		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
 		<plugins>
+			<plugin>
+			    <groupId>org.jacoco</groupId>
+			    <artifactId>jacoco-maven-plugin</artifactId>
+			    <version>0.8.2</version>
+			     <configuration> 
+			        <excludes> 
+			         <exclude>com.agilethought.internship.sso.model</exclude> 
+			         <exclude>com.agilethought.internship.sso.domain</exclude> 
+			         <exclude>com.agilethought.internship.sso.swagger</exclude> 
+			         <exclude>com.agilethought.internship.sso.errorhandling</exclude> 
+			        </excludes> 
+			       </configuration> 
+			    <executions>
+				<execution>
+				    <goals>
+					<goal>prepare-agent</goal>
+				    </goals>
+				</execution>
+				<execution>
+				    <id>report</id>
+				    <phase>prepare-package</phase>
+				    <goals>
+					<goal>report</goal>
+				    </goals>
+				</execution>
+			    </executions>
+			</plugin>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
