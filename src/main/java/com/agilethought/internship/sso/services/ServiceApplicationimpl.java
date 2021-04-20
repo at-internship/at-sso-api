@@ -11,8 +11,8 @@ import com.agilethought.internship.sso.mapper.UserTransformer;
 import com.agilethought.internship.sso.model.User;
 import com.agilethought.internship.sso.model.UserId;
 import com.agilethought.internship.sso.repository.RepositoryApplication;
-import com.agilethougth.intership.sso.errorhandling.HttpExceptionMessage;
-import com.agilethougth.intership.sso.errorhandling.PathErrorMessage;
+import com.agilethought.internship.sso.exception.errorMessages.HttpExceptionMessage;
+import com.agilethought.internship.sso.exception.errorMessages.PathErrorMessage;
 import java.util.List;
 
 @Service

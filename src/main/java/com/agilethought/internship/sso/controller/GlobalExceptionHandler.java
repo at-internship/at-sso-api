@@ -13,7 +13,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import com.agilethought.internship.sso.exception.ExceptionResponse;
 import com.agilethought.internship.sso.model.ApiError;
-import com.agilethougth.intership.sso.errorhandling.HttpExceptionMessage;
+import com.agilethought.internship.sso.exception.errorMessages.HttpExceptionMessage;
 import com.agilethought.internship.sso.exception.BadRequestException;
 
 @Order(Ordered.HIGHEST_PRECEDENCE)
