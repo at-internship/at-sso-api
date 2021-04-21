@@ -5,12 +5,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
+
 import com.agilethought.internship.sso.domain.UserDTO;
 import com.agilethought.internship.sso.exception.BadRequestException;
 import com.agilethought.internship.sso.mapper.UserTransformer;
 import com.agilethought.internship.sso.model.User;
 import com.agilethought.internship.sso.model.UserId;
-import com.agilethought.internship.sso.repository.RepositoryApplication;
+import com.agilethought.internship.sso.repository.UserRepository;
 import com.agilethougth.intership.sso.errorhandling.HttpExceptionMessage;
 import com.agilethougth.intership.sso.errorhandling.PathErrorMessage;
 import java.util.List;
@@ -23,7 +24,7 @@ public class ServiceApplicationimpl implements ServiceApplication {
 	private UserTransformer userTransformer;
 
 	@Autowired
-	private RepositoryApplication repositoryApplication;
+	private UserRepository userRepository;
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -35,7 +36,7 @@ public class ServiceApplicationimpl implements ServiceApplication {
 		BusinessValidations.validate(userDTO);
 		userDTO = PopulateFields.populate(userDTO);
 
-		if (repositoryApplication.existsByEmail(userDTO.getEmail().toLowerCase().trim())) {
+		if (userRepository.existsByEmail(userDTO.getEmail().toLowerCase().trim())) {
 			throw new BadRequestException(HttpExceptionMessage.BAD_REQUEST_MAIL_ALREADY_EXISTS,
 					PathErrorMessage.PATH_API, HttpStatus.BAD_REQUEST);
 		}
@@ -44,7 +45,7 @@ public class ServiceApplicationimpl implements ServiceApplication {
 		log.info("ServiceApplicationimpl.createUser - users transformed: {}", user);
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		user.setEmail(user.getEmail().toLowerCase().trim());
-		String userIdDb = repositoryApplication.save(user).getId();
+		String userIdDb = userRepository.save(user).getId();
 		log.info("ServiceApplicationimpl.createUser- User saved  successfully with id: {}", user.getId());
 		userId.setId(userIdDb);
 		log.info("ServiceApplicationimpl.createUser- User created successfully on mongoDB: {}", userId);
@@ -54,7 +55,7 @@ public class ServiceApplicationimpl implements ServiceApplication {
 	@Override
 	public List<UserDTO> getUsers() {
 		log.info("ServiceApplicationimpl.getUsers - Before getting all the users");
-		List<User> response = repositoryApplication.findAll();
+		List<User> response = userRepository.findAll();
 		log.info("ServiceApplicationimpl.getUsers -  Consulted successfully on mongoDB: {}", response);
 		return userTransformer.listTransformer(response);
 	}
@@ -62,7 +63,7 @@ public class ServiceApplicationimpl implements ServiceApplication {
 	@Override
 	public List<UserDTO> getUsersByEmail(String email) {
 		log.info("ServiceApplicationimpl.getUsers - Searching users by email");
-		List<UserDTO> users = repositoryApplication.findUsersByEmail(email);
+		List<UserDTO> users = userRepository.findUsersByEmail(email);
 		log.info("ServiceApplicationimpl.getUsersByEmail - getUsersByEmail operation was successful: {}", users);
 		return users;
 	}
