@@ -1,6 +1,8 @@
 package com.agilethought.internship.sso.mapper;
 
 import java.util.List;
+
+import com.agilethought.internship.sso.domain.UpdateUserResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.agilethought.internship.sso.domain.UserDTO;
@@ -17,6 +19,7 @@ public class UserTransformer {
 	public void transform(MapperFactory factory) {
 		this.mapperFacade = factory.getMapperFacade();
 		factory.classMap(User.class, UserDTO.class).mapNulls(false).mapNullsInReverse(false).byDefault().register();
+		factory.classMap(UserDTO.class, User.class).mapNulls(false).mapNullsInReverse(false).byDefault().register();
 		factory.classMap(UserDTO.class, User.class).mapNulls(false).mapNullsInReverse(false).byDefault().register();
 	}
 
