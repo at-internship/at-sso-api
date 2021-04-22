@@ -1,5 +1,6 @@
 package com.agilethought.internship.sso.domain;
 
+import io.swagger.models.auth.In;
 import org.springframework.data.annotation.Id;
 import lombok.Data;
 
@@ -9,7 +10,7 @@ public class UserDTO {
 	@Id
 	private String id;
 
-	private String name;
+	private Integer type;
 
 	private String firstName;
 
@@ -21,9 +22,9 @@ public class UserDTO {
 
 	private Integer status;
 
-	public UserDTO(String name, String firstName, String lastName, String email, String password, Integer status) {
+	public UserDTO(Integer type, String firstName, String lastName, String email, String password, Integer status) {
 
-		this.name = name;
+		this.type = type;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
