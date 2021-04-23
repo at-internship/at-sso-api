@@ -17,6 +17,9 @@ public interface RepositoryApplication extends MongoRepository<User, String> {
 	@Query("{ 'email' : ?0 }")
 	List<UserDTO> findUsersByEmail(String email);
 
+
 	boolean existsByEmail(String email);
+
+
 
 }
