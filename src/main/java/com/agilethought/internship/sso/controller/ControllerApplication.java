@@ -1,5 +1,7 @@
 package com.agilethought.internship.sso.controller;
 
+import com.agilethought.internship.sso.domain.NewUserRequest;
+import com.agilethought.internship.sso.domain.NewUserResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,21 +17,21 @@ import java.util.List;
 
 @RestController
 @Slf4j
-public class ControllerAplication {
+public class ControllerApplication {
 
 	@Autowired
 	ServiceApplication serviceApplication;
 
 	@PostMapping(value = "/api/v1/user", produces = "application/json")
 	@ResponseStatus(value = HttpStatus.CREATED)
-	public UserId createUser(@RequestBody UserDTO userDTO) {
-		return serviceApplication.createUser(userDTO);
-	}// End createUser
+	public NewUserResponse createUser(@RequestBody NewUserRequest request) {
+		return serviceApplication.createUser(request);
+	}
 
 	@GetMapping(value = "/api/v1/user", produces = "application/json")
 	@ResponseStatus(value = HttpStatus.OK)
 	public List<UserDTO> getAllUsers() {
-		log.info("ControllerAplication.getAllUsers - Calling get operation");
+		log.info("ControllerApplication.getAllUsers - Calling get operation");
 		return serviceApplication.getUsers();
 	}
 }
