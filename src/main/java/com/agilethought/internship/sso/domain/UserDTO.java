@@ -22,6 +22,9 @@ public class UserDTO {
 
 	private Integer status;
 
+	public UserDTO() {
+	}
+
 	public UserDTO(Integer type, String firstName, String lastName, String email, String password, Integer status) {
 
 		this.type = type;
