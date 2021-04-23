@@ -3,6 +3,12 @@ package com.agilethought.internship.sso.services;
 import com.agilethought.internship.sso.domain.NewUserRequest;
 import com.agilethought.internship.sso.domain.NewUserResponse;
 import com.agilethought.internship.sso.validator.user.CreateNewUserValidation;
+import static com.agilethought.internship.sso.exception.errorMessages.ErrorMessage.*;
+
+import com.agilethought.internship.sso.domain.UpdateUserRequest;
+import com.agilethought.internship.sso.domain.UpdateUserResponse;
+import com.agilethought.internship.sso.exception.errorMessages.NotFoundException;
+import com.agilethought.internship.sso.validator.user.UserValidator;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,6 +23,7 @@ import com.agilethought.internship.sso.repository.RepositoryApplication;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ServiceApplicationimpl implements ServiceApplication {
@@ -56,6 +63,22 @@ public class ServiceApplicationimpl implements ServiceApplication {
 		List<User> response = repositoryApplication.findAll();
 		logger.info("ServiceApplicationimpl.getUsers -  Consulted successfully on mongoDB: {}", response);
 		return orikaMapperFacade.mapAsList(response, UserDTO.class);
+	}
+
+	@Override
+	public UpdateUserResponse updateUser(UpdateUserRequest request, String id) {
+		Optional<User> userFoundById = repositoryApplication.findById(id);
+		if (!userFoundById.isPresent())
+			throw new NotFoundException(
+					String.format(NOT_FOUND_RESOURCE, USER, id)
+			);
+		request.setId(id);
+		User user = orikaMapperFacade.map(request, User.class);
+		createNewUserValidation.validate(user);
+		setLetterCases(user);
+		User updatedUser = repositoryApplication.save(user);
+		return orikaMapperFacade.map(updatedUser, UpdateUserResponse.class);
+
 	}
 
 	@Override
