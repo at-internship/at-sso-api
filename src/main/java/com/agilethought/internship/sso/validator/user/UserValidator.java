@@ -7,13 +7,11 @@ import com.agilethought.internship.sso.validator.Validator;
 import static com.agilethought.internship.sso.validator.user.ValidationUtils.*;
 import static com.agilethought.internship.sso.exception.errorMessages.ErrorMessageCreateUser.*;
 
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserValidator implements Validator<User> {
-    private static final Logger logger = LogManager.getLogger();
 
     @Override
     public void validate(User user) {
@@ -31,7 +29,9 @@ public class UserValidator implements Validator<User> {
                 String.format(
                     MISSING_REQUIRED_INPUT.getErrorMessage(),
                     TYPE.getErrorMessage()
-                )
+                ),
+                PATH_API.getErrorMessage(),
+                HttpStatus.BAD_REQUEST
             );
         }
         if (type < 1 || type > 2) {
@@ -40,7 +40,9 @@ public class UserValidator implements Validator<User> {
                     INVALIDATE_INPUT.getErrorMessage(),
                     TYPE.getErrorMessage(),
                     CORRECT_FORMAT_TYPE.getErrorMessage()
-                )
+                ),
+                PATH_API.getErrorMessage(),
+                HttpStatus.BAD_REQUEST
             );
         }
     }
@@ -51,7 +53,9 @@ public class UserValidator implements Validator<User> {
                 String.format(
                     MISSING_REQUIRED_INPUT.getErrorMessage(),
                     FIRST_NAME.getErrorMessage()
-                )
+                ),
+                PATH_API.getErrorMessage(),
+                HttpStatus.BAD_REQUEST
             );
         }
     }
@@ -62,7 +66,9 @@ public class UserValidator implements Validator<User> {
                 String.format(
                     MISSING_REQUIRED_INPUT.getErrorMessage(),
                     LAST_NAME.getErrorMessage()
-                )
+                ),
+                PATH_API.getErrorMessage(),
+                HttpStatus.BAD_REQUEST
             );
         }
     }
@@ -73,7 +79,9 @@ public class UserValidator implements Validator<User> {
                 String.format(
                     MISSING_REQUIRED_INPUT.getErrorMessage(),
                     EMAIL.getErrorMessage()
-                )
+                ),
+                PATH_API.getErrorMessage(),
+                HttpStatus.BAD_REQUEST
             );
         }
         if (!isValidEmail(email)) {
@@ -82,7 +90,9 @@ public class UserValidator implements Validator<User> {
                     INVALIDATE_INPUT.getErrorMessage(),
                     EMAIL.getErrorMessage(),
                     CORRECT_FORMAT_EMAIL.getErrorMessage()
-                )
+                ),
+                PATH_API.getErrorMessage(),
+                HttpStatus.BAD_REQUEST
             );
         }
     }
@@ -93,7 +103,9 @@ public class UserValidator implements Validator<User> {
                 String.format(
                     MISSING_REQUIRED_INPUT.getErrorMessage(),
                     PASSWORD.getErrorMessage()
-                )
+                ),
+                PATH_API.getErrorMessage(),
+                HttpStatus.BAD_REQUEST
             );
         }
         if (!isValidatePassword(password)) {
@@ -102,7 +114,9 @@ public class UserValidator implements Validator<User> {
                     INVALIDATE_INPUT.getErrorMessage(),
                     PASSWORD.getErrorMessage(),
                     CORRECT_FORMAT_PASSWORD.getErrorMessage()
-                )
+                ),
+                PATH_API.getErrorMessage(),
+                HttpStatus.BAD_REQUEST
             );
         }
     }
@@ -113,7 +127,9 @@ public class UserValidator implements Validator<User> {
                 String.format(
                     MISSING_REQUIRED_INPUT.getErrorMessage(),
                     STATUS.getErrorMessage()
-                )
+                ),
+                PATH_API.getErrorMessage(),
+                HttpStatus.BAD_REQUEST
             );
         }
         if( status < 0 || status > 1) {
@@ -122,7 +138,9 @@ public class UserValidator implements Validator<User> {
                     INVALIDATE_INPUT.getErrorMessage(),
                     STATUS.getErrorMessage(),
                     CORRECT_FORMAT_STATUS.getErrorMessage()
-                )
+                ),
+                PATH_API.getErrorMessage(),
+                HttpStatus.BAD_REQUEST
             );
         }
     }

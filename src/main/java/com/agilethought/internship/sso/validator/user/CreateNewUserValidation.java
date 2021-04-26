@@ -4,9 +4,12 @@ import com.agilethought.internship.sso.exception.BadRequestException;
 import com.agilethought.internship.sso.model.User;
 import com.agilethought.internship.sso.repository.RepositoryApplication;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import static com.agilethought.internship.sso.exception.errorMessages.ErrorMessageCreateUser.ALREADY_EXISTING_EMAIL;
+import static com.agilethought.internship.sso.exception.errorMessages.ErrorMessageCreateUser.PATH_API;
+
 
 @Service
 public class CreateNewUserValidation {
@@ -28,7 +31,9 @@ public class CreateNewUserValidation {
                 String.format(
                     ALREADY_EXISTING_EMAIL.getErrorMessage(),
                     email
-                )
+                ),
+                PATH_API.getErrorMessage(),
+                HttpStatus.BAD_REQUEST
             );
         }
     }
