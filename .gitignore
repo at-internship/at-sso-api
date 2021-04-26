@@ -5,9 +5,6 @@ target/
 !**/src/test/**/target/
 bin/
 sprintsLogs/
-
-.mvn/
-bin/
 sprintsLogs/SprintsLogs.log
 
 ### STS ###
