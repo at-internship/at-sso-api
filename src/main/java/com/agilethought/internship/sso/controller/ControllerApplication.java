@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import com.agilethought.internship.sso.domain.UserDTO;
-import com.agilethought.internship.sso.model.UserId;
 import com.agilethought.internship.sso.services.ServiceApplication;
 import java.util.List;
 
@@ -37,7 +36,7 @@ public class ControllerApplication {
 	}
 
 	@ResponseStatus(HttpStatus.OK)
-	@PutMapping(value = "/users/{id}", consumes = "application/json", produces = "application/json")
+	@PutMapping(value = "/api/v1/user/{id}", consumes = "application/json", produces = "application/json")
 	@ApiOperation(value = "Update a User in the application")
 	@ApiResponses(value = {
 			@ApiResponse(code = 201, message = "Resource update successfully"),
@@ -47,8 +46,7 @@ public class ControllerApplication {
 	})
 	public UpdateUserResponse putUser(@RequestBody UpdateUserRequest request, @PathVariable String id) {
 
-		return serviceApplication.updateUserById(request,id);
+		return serviceApplication.updateUser(request,id);
 
 	}
-
 }

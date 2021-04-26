@@ -2,6 +2,8 @@ package com.agilethought.internship.sso.controller;
 
 import com.agilethought.internship.sso.domain.NewUserRequest;
 import com.agilethought.internship.sso.domain.NewUserResponse;
+import com.agilethought.internship.sso.domain.UpdateUserRequest;
+import com.agilethought.internship.sso.domain.UpdateUserResponse;
 import com.agilethought.internship.sso.services.ServiceApplication;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,10 +18,10 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -32,7 +34,7 @@ public class ControllerApplicationTest {
     @MockBean
     private ServiceApplication serviceApplication;
 
-    private static final String REQUEST_MAPPING = "/api/v1";
+    private static final String REQUEST_MAPPING = "/api/v2";
 
     @Test
     public void itShouldGetAllUsers() throws Exception {
@@ -53,6 +55,20 @@ public class ControllerApplicationTest {
                     .content("{}")
                     .contentType(APPLICATION_JSON)
         ).andExpect(status().isCreated());
+
+    }
+
+    @Test
+    public void testPutUser() throws Exception {
+
+        String putMapping = "/user/1234";
+        when(serviceApplication.updateUser(any(UpdateUserRequest.class), anyString()))
+                .thenReturn(new UpdateUserResponse());
+        mockMvc.perform(
+                put(REQUEST_MAPPING + putMapping)
+                        .content("{}")
+                        .contentType(APPLICATION_JSON))
+                .andExpect(status().isOk());
 
     }
 }

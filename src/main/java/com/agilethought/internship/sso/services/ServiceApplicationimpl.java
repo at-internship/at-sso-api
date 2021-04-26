@@ -3,12 +3,10 @@ package com.agilethought.internship.sso.services;
 import com.agilethought.internship.sso.domain.NewUserRequest;
 import com.agilethought.internship.sso.domain.NewUserResponse;
 import com.agilethought.internship.sso.validator.user.CreateNewUserValidation;
-import static com.agilethought.internship.sso.exception.errorMessages.ErrorMessage.*;
 
 import com.agilethought.internship.sso.domain.UpdateUserRequest;
 import com.agilethought.internship.sso.domain.UpdateUserResponse;
-import com.agilethought.internship.sso.exception.errorMessages.NotFoundException;
-import com.agilethought.internship.sso.validator.user.UserValidator;
+import com.agilethought.internship.sso.validator.user.UpdateUserValidator;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,7 +21,6 @@ import com.agilethought.internship.sso.repository.RepositoryApplication;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ServiceApplicationimpl implements ServiceApplication {
@@ -43,6 +40,9 @@ public class ServiceApplicationimpl implements ServiceApplication {
 
 	@Autowired
 	private CreateNewUserValidation createNewUserValidation;
+
+	@Autowired
+	private UpdateUserValidator updateUserValidator;
 
 	@Override
 	public NewUserResponse createUser(NewUserRequest request) {
@@ -67,19 +67,15 @@ public class ServiceApplicationimpl implements ServiceApplication {
 
 	@Override
 	public UpdateUserResponse updateUser(UpdateUserRequest request, String id) {
-		Optional<User> userFoundById = repositoryApplication.findById(id);
-		if (!userFoundById.isPresent())
-			throw new NotFoundException(
-					String.format(NOT_FOUND_RESOURCE, USER, id)
-			);
 		request.setId(id);
-		User user = orikaMapperFacade.map(request, User.class);
-		createNewUserValidation.validate(user);
-		setLetterCases(user);
-		User updatedUser = repositoryApplication.save(user);
+		User userUpdatedFields = orikaMapperFacade.map(request, User.class);
+		updateUserValidator.validate(userUpdatedFields);
+		setLetterCases(userUpdatedFields);
+		User updatedUser = repositoryApplication.save(userUpdatedFields);
 		return orikaMapperFacade.map(updatedUser, UpdateUserResponse.class);
 
 	}
+
 
 	@Override
 	public List<UserDTO> getUsersByEmail(String email) {
