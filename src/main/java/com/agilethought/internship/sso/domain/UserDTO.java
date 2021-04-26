@@ -1,10 +1,11 @@
 package com.agilethought.internship.sso.domain;
 
-import io.swagger.models.auth.In;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import lombok.Data;
 
 @Data
+@NoArgsConstructor
 public class UserDTO {
 
 	@Id
@@ -22,11 +23,7 @@ public class UserDTO {
 
 	private Integer status;
 
-	public UserDTO() {
-	}
-
 	public UserDTO(Integer type, String firstName, String lastName, String email, String password, Integer status) {
-
 		this.type = type;
 		this.firstName = firstName;
 		this.lastName = lastName;

@@ -21,6 +21,7 @@ public enum ErrorMessageCreateUser {
     USER("User"),
     EMAIL("Email"),
     PASSWORD("Password"),
+    PATH_API("/api/v1/users/"),
     BAD_REQUEST_JSON("Malformed JSON request.");
 
     private final String errorMessage;
