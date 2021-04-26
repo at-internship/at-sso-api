@@ -15,6 +15,8 @@ import com.agilethought.internship.sso.model.ApiError;
 import com.agilethought.internship.sso.exception.BadRequestException;
 import com.agilethought.internship.sso.exception.errorMessages.ErrorMessageCreateUser;
 
+import java.util.Date;
+
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
@@ -40,7 +42,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler
     public final ResponseEntity<ExceptionResponse> handleBadRequestException(BadRequestException e) {
-        ExceptionResponse exceptionResponse = new ExceptionResponse();
+        ExceptionResponse exceptionResponse = new ExceptionResponse(
+                new Date(),
+                e.getStatus(),
+                HttpStatus.BAD_REQUEST,
+                e.getMessage(),
+                e.getPath()
+        );
         return new ResponseEntity<ExceptionResponse>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
 
