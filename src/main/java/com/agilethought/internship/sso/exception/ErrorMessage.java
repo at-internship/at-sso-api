@@ -3,7 +3,7 @@ package com.agilethought.internship.sso.exception;
 public class ErrorMessage {
 
     public static final String MISSING_REQUIRED_INPUT = "Required field %s is missing.";
-
+    public static final String ID = "Id";
     public static final String INVALID_INPUT = "Invalid input on field %s. Correct format is: %s";
     public static final String CORRECT_FORMAT_NUMERIC = "A number with or " +
             "without a decimal point.";
@@ -21,5 +21,5 @@ public class ErrorMessage {
 
     public static final String INVALID_CREDENTIALS = "Invalid login credentials.";
     public static final String UNAVAILABLE_ENTITY = "This %s is currently unavailable.";
-
+    public static final String VALIDATION_ERROR = "One or more fields are invalid";
 }
