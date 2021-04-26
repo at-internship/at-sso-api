@@ -16,8 +16,11 @@ public class ExceptionResponse {
 	private String error;
 	private String message;
 	private String path;
-	
-	public ExceptionResponse(Date timestamp,int status,HttpStatus error, String message, String path) {
+
+	public ExceptionResponse() {
+	}
+
+	public ExceptionResponse(Date timestamp, int status, HttpStatus error, String message, String path) {
 		super();
 		this.timestamp = timestamp;
 		this.status = status;

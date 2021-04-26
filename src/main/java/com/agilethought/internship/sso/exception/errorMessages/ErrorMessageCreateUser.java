@@ -20,7 +20,8 @@ public enum ErrorMessageCreateUser {
     TYPE("Type"),
     USER("User"),
     EMAIL("Email"),
-    PASSWORD("Password");
+    PASSWORD("Password"),
+    BAD_REQUEST_JSON("Malformed JSON request.");
 
     private final String errorMessage;
 
