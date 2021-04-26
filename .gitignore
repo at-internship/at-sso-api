@@ -4,6 +4,10 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+.mvn/
+bin/
+sprintsLogs/SprintsLogs.log
+
 ### STS ###
 .apt_generated
 .classpath
