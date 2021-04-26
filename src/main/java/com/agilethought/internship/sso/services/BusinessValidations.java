@@ -5,8 +5,8 @@ import java.util.regex.Pattern;
 import org.springframework.http.HttpStatus;
 import com.agilethought.internship.sso.domain.UserDTO;
 import com.agilethought.internship.sso.exception.BadRequestException;
-import com.agilethougth.intership.sso.errorhandling.HttpExceptionMessage;
-import com.agilethougth.intership.sso.errorhandling.PathErrorMessage;
+import com.agilethought.internship.sso.exception.errrohandling.HttpExceptionMessage;
+import com.agilethought.internship.sso.exception.errrohandling.PathErrorMessage;
 
 public class BusinessValidations {
 
