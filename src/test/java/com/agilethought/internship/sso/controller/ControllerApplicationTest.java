@@ -36,7 +36,7 @@ public class ControllerApplicationTest {
 
     @Test
     public void itShouldGetAllUsers() throws Exception {
-        String getMapping = "/user";
+        String getMapping = "/users";
         when(serviceApplication.getUsers()).thenReturn(new ArrayList<>());
         mockMvc.perform(
                 get(REQUEST_MAPPING + getMapping).contentType(APPLICATION_JSON)
@@ -46,7 +46,7 @@ public class ControllerApplicationTest {
 
     @Test
     public void itShouldCreateNewUser() throws Exception {
-        String postMapping = "/user";
+        String postMapping = "/users";
         when(serviceApplication.createUser(any(NewUserRequest.class))).thenReturn(new NewUserResponse());
         mockMvc.perform(
             post(REQUEST_MAPPING + postMapping)
