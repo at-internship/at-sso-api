@@ -1,10 +1,10 @@
-package com.agilethought.internship.sso.validator.user;
+package com.agilethought.internship.sso.validator;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ValidationUtils {
-    public static boolean isValidateString(String str) {
+    public static boolean isValidString(String str) {
         if(str == null || str.isEmpty() || str.trim().equals("")) {
             return false;
         }
@@ -19,7 +19,7 @@ public class ValidationUtils {
         return matcherEmail.find();
     }
 
-    public static boolean isValidatePassword(String password) {
+    public static boolean isValidPassword(String password) {
         Pattern patternPassword = Pattern.compile(
                 // At least one numerical character
                 // At least one lowercase character

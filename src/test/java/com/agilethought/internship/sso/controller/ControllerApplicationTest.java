@@ -34,7 +34,7 @@ public class ControllerApplicationTest {
     @MockBean
     private ServiceApplication serviceApplication;
 
-    private static final String REQUEST_MAPPING = "/api/v2";
+    private static final String REQUEST_MAPPING = "/api/v1";
 
     @Test
     public void itShouldGetAllUsers() throws Exception {

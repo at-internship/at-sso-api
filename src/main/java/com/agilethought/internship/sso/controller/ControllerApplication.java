@@ -16,19 +16,20 @@ import com.agilethought.internship.sso.services.ServiceApplication;
 import java.util.List;
 
 @RestController
+@RequestMapping(value = "/api/v1")
 @Slf4j
 public class ControllerApplication {
 
 	@Autowired
 	ServiceApplication serviceApplication;
 
-	@PostMapping(value = "/api/v1/user", produces = "application/json")
+	@PostMapping(value = "/user", produces = "application/json")
 	@ResponseStatus(value = HttpStatus.CREATED)
 	public NewUserResponse createUser(@RequestBody NewUserRequest request) {
 		return serviceApplication.createUser(request);
 	}
 
-	@GetMapping(value = "/api/v1/user", produces = "application/json")
+	@GetMapping(value = "/user", produces = "application/json")
 	@ResponseStatus(value = HttpStatus.OK)
 	public List<UserDTO> getAllUsers() {
 		log.info("ControllerApplication.getAllUsers - Calling get operation");
@@ -36,7 +37,7 @@ public class ControllerApplication {
 	}
 
 	@ResponseStatus(HttpStatus.OK)
-	@PutMapping(value = "/api/v1/user/{id}", consumes = "application/json", produces = "application/json")
+	@PutMapping(value = "/user/{id}", consumes = "application/json", produces = "application/json")
 	@ApiOperation(value = "Update a User in the application")
 	@ApiResponses(value = {
 			@ApiResponse(code = 201, message = "Resource update successfully"),
