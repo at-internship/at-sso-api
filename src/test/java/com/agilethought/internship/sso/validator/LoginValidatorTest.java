@@ -24,7 +24,7 @@ public class LoginValidatorTest {
                         loginValidator.validate(loginRequest);
                     });
                     Assertions.assertEquals(
-                            "Required field Email is missing.",
+                            "One or more fields are invalid",
                             exception.getMessage()
                     );
                 },
@@ -35,7 +35,7 @@ public class LoginValidatorTest {
                         loginValidator.validate(loginRequest);
                     });
                     Assertions.assertEquals(
-                            "Required field Email is missing.",
+                            "One or more fields are invalid",
                             exception.getMessage()
                     );
                 },
@@ -45,7 +45,7 @@ public class LoginValidatorTest {
                         LoginValidator loginValidator = new LoginValidator();
                         loginValidator.validate(loginRequest);
                     });
-                    Assertions.assertEquals("Required field Email is missing.",
+                    Assertions.assertEquals("One or more fields are invalid",
                             exception.getMessage()
                     );
                 },
@@ -87,7 +87,7 @@ public class LoginValidatorTest {
                         LoginValidator loginValidator = new LoginValidator();
                         loginValidator.validate(loginRequest);
                     });
-                    Assertions.assertEquals("Required field Password is missing.", errorMessagePassword.getMessage());
+                    Assertions.assertEquals("One or more fields are invalid", errorMessagePassword.getMessage());
                 },
                 () -> {
                     loginRequest.setPassword("");
@@ -95,7 +95,7 @@ public class LoginValidatorTest {
                         LoginValidator loginValidator = new LoginValidator();
                         loginValidator.validate(loginRequest);
                     });
-                    Assertions.assertEquals("Required field Password is missing.", errorMessagePassword.getMessage());
+                    Assertions.assertEquals("One or more fields are invalid", errorMessagePassword.getMessage());
                 },
                 () -> {
                     loginRequest.setPassword("  ");
@@ -103,7 +103,7 @@ public class LoginValidatorTest {
                         LoginValidator loginValidator = new LoginValidator();
                         loginValidator.validate(loginRequest);
                     });
-                    Assertions.assertEquals("Required field Password is missing.", errorMessagePassword.getMessage());
+                    Assertions.assertEquals("One or more fields are invalid", errorMessagePassword.getMessage());
                 },
                 () -> {
                     loginRequest.setPassword("hiWorld");
