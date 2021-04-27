@@ -7,6 +7,15 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.agilethought.internship.sso.exception.GlobalExceptionBody.ErrorDetails;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@ToString
+@NoArgsConstructor
 @ResponseStatus(HttpStatus.BAD_REQUEST)
 public class BadRequestExceptionNew extends RuntimeException{
 	private List<ErrorDetails> errorDetails;
