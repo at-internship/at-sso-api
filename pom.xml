@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.3.4.RELEASE</version>
+		<version>2.3.9.RELEASE</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.agilethought.internship</groupId>
@@ -63,12 +63,6 @@
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-			<scope>runtime</scope>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
@@ -115,33 +109,6 @@
 						<web>java -Dserver.port=$PORT $JAVA_OPTS -jar target/${project.name}-${project.version}.jar</web>
 					</processTypes>
 				</configuration>
-			</plugin>
-			<plugin>
-			    <groupId>org.jacoco</groupId>
-			    <artifactId>jacoco-maven-plugin</artifactId>
-			    <version>0.8.2</version>
-			     <configuration> 
-			        <excludes> 
-			         <exclude>com.agilethought.internship.sso.model</exclude> 
-			         <exclude>com.agilethought.internship.sso.domain</exclude> 
-			         <exclude>com.agilethought.internship.sso.swagger</exclude> 
-			         <exclude>com.agilethought.internship.sso.errorhandling</exclude> 
-			        </excludes> 
-			       </configuration> 
-			    <executions>
-				<execution>
-				    <goals>
-					<goal>prepare-agent</goal>
-				    </goals>
-				</execution>
-				<execution>
-				    <id>report</id>
-				    <phase>prepare-package</phase>
-				    <goals>
-					<goal>report</goal>
-				    </goals>
-				</execution>
-			    </executions>
 			</plugin>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
