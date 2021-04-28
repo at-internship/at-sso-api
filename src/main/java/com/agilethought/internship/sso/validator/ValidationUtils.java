@@ -1,4 +1,4 @@
-package com.agilethought.internship.sso.validator.user;
+package com.agilethought.internship.sso.validator;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -16,12 +16,12 @@ public class ValidationUtils {
 
     }
 
-    static boolean isLowerCaseString(String str) {
+    public static boolean isLowerCaseString(String str) {
         return str.equals(str.toLowerCase());
 
     }
 
-    static boolean isValidEmail(String email) {
+    public static boolean isValidEmail(String email) {
         Pattern patternEmail = Pattern.compile(
                 "^[\\p{L}\\p{N}\\._%+-]+@[\\p{L}\\p{N}\\.\\-]+\\.[\\p{L}]{2,}$"
         );
@@ -29,7 +29,7 @@ public class ValidationUtils {
         return matcherEmail.find();
     }
 
-    static boolean isValidPassword(String password) {
+    public static boolean isValidPassword(String password) {
         Pattern patternPassword = Pattern.compile(
                 // At least one numerical character
                 // At least one lowercase character

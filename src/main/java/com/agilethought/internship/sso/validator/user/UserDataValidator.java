@@ -11,7 +11,7 @@ import java.util.List;
 
 import static com.agilethought.internship.sso.exception.GlobalExceptionBody.ErrorDetails;
 import static com.agilethought.internship.sso.exception.errorhandling.ErrorMessage.*;
-import static com.agilethought.internship.sso.validator.user.ValidationUtils.*;
+import static com.agilethought.internship.sso.validator.ValidationUtils.*;
 
 @Service
 public class UserDataValidator implements Validator<User> {
