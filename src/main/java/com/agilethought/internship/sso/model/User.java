@@ -14,6 +14,8 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private String id;
 	
+	private Integer type;
+	
 	private String name;
 	
 	private String firstName;
