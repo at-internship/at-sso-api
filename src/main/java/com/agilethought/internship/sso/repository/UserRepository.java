@@ -8,7 +8,7 @@ import com.agilethought.internship.sso.domain.UserDTO;
 import com.agilethought.internship.sso.model.User;
 
 @Repository
-public interface RepositoryApplication extends MongoRepository<User, String> {
+public interface UserRepository extends MongoRepository<User, String> {
 
 	List<User> findAll();
 
@@ -18,5 +18,8 @@ public interface RepositoryApplication extends MongoRepository<User, String> {
 	List<UserDTO> findUsersByEmail(String email);
 
 	boolean existsByEmail(String email);
+	
+	@Query("{ 'email' : ?0, 'password' : ?1 }")
+	List<User> findUserWithCredentials(String email, String password);
 
 }
