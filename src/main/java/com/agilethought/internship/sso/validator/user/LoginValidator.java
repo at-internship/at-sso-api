@@ -11,7 +11,7 @@ import com.agilethought.internship.sso.validator.Validator;
 import org.springframework.stereotype.Service;
 
 import com.agilethought.internship.sso.exception.BadRequestExceptionNew;
-import com.agilethought.internship.sso.exception.GlobalExceptionBody;
+import com.agilethought.internship.sso.exception.GlobalExceptionBody.ErrorDetails;
 import com.agilethought.internship.sso.dto.LoginRequest;
 import com.agilethought.internship.sso.exception.UnauthorizedException;
 import org.apache.commons.collections4.CollectionUtils;
@@ -25,17 +25,17 @@ public class LoginValidator implements Validator<LoginRequest> {
 	
 	@Override
 	public void validate(LoginRequest loginRequest) {
-		List<GlobalExceptionBody.ErrorDetails> errorDetails = new ArrayList<GlobalExceptionBody.ErrorDetails>();
+		List<ErrorDetails> errorDetails = new ArrayList<ErrorDetails>();
 		validateEmail(loginRequest.getEmail(), errorDetails);
 		validatePassword(loginRequest.getPassword(), errorDetails);
 		if (CollectionUtils.isNotEmpty(errorDetails))
 			throw new BadRequestExceptionNew(VALIDATION_ERROR, errorDetails);
 	}
 
-	private void validateEmail(String email, List<GlobalExceptionBody.ErrorDetails> errorDetails) {
+	private void validateEmail(String email, List<ErrorDetails> errorDetails) {
 
 		if (!isValidString(email)) {
-			GlobalExceptionBody.ErrorDetails error = new GlobalExceptionBody.ErrorDetails();
+			ErrorDetails error = new ErrorDetails();
 			error.setErrorMessage(String.format(MISSING_REQUIRED_INPUT, EMAIL));
 			error.setFieldName(EMAIL);
 			errorDetails.add(error);
@@ -46,10 +46,10 @@ public class LoginValidator implements Validator<LoginRequest> {
 
 	}
 
-	private void validatePassword(String password, List<GlobalExceptionBody.ErrorDetails> errorDetails) {
+	private void validatePassword(String password, List<ErrorDetails> errorDetails) {
 
 		if (!isValidString(password)) {
-			GlobalExceptionBody.ErrorDetails error = new GlobalExceptionBody.ErrorDetails();
+			ErrorDetails error = new ErrorDetails();
 			error.setErrorMessage(String.format(MISSING_REQUIRED_INPUT, PASSWORD));
 			error.setFieldName(PASSWORD);
 			errorDetails.add(error);
