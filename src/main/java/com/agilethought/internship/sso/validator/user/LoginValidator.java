@@ -14,7 +14,7 @@ import com.agilethought.internship.sso.exception.BadRequestException;
 import com.agilethought.internship.sso.exception.GlobalExceptionBody.ErrorDetails;
 import com.agilethought.internship.sso.dto.LoginRequest;
 import com.agilethought.internship.sso.exception.UnauthorizedException;
-import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections.CollectionUtils;
 
 import lombok.extern.slf4j.Slf4j;
 
