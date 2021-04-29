@@ -1,6 +1,9 @@
 package com.agilethought.internship.sso.mapper;
 
+import com.agilethought.internship.sso.dto.LoginResponse;
 import com.agilethought.internship.sso.dto.NewUserResponse;
+import com.agilethought.internship.sso.dto.UpdateUserResponse;
+
 import org.springframework.stereotype.Component;
 import com.agilethought.internship.sso.dto.UserDTO;
 import com.agilethought.internship.sso.model.User;
