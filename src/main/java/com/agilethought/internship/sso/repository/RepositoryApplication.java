@@ -8,7 +8,7 @@ import com.agilethought.internship.sso.dto.UserDTO;
 import com.agilethought.internship.sso.model.User;
 
 @Repository
-public interface UserRepository extends MongoRepository<User, String> {
+public interface RepositoryApplication extends MongoRepository<User, String> {
 
 	List<User> findAll();
 

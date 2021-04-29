@@ -47,7 +47,7 @@ public class ServiceApplicationimpl implements ServiceApplication {
 	@Override
 	public List<UserDTO> getAllUsers() {
 		log.info("ServiceApplicationimpl.getUsers - Before getting all the users");
-		List<User> response = userRepository.findAll();
+		List<User> response = repositoryApplication.findAll();
 		log.info("ServiceApplicationimpl.getUsers -  Consulted successfully on mongoDB: {}", response);
 		return orikaMapperFacade.mapAsList(response, UserDTO.class);
 	}
