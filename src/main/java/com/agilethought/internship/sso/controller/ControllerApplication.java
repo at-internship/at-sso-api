@@ -95,4 +95,19 @@ public class ControllerApplication {
     public LoginResponse loginUser(@RequestBody LoginRequest loginRequest) {
     	return serviceApplication.loginUser(loginRequest);
     }
+	
+	 @GetMapping("/users/{id}")
+	    @ResponseStatus(HttpStatus.OK)
+	    @ApiOperation(value = "Validation the session of the user")
+	    @ApiResponses(value = {
+	            @ApiResponse(code = 200, message = "Search in the database without parameters"),
+	            @ApiResponse(code = 401, message = "Unauthorized"),
+	            @ApiResponse(code = 403, message = "Access prohibited"),
+	            @ApiResponse(code = 404, message = "Not Found"),
+	    })
+	    public UserDTO getUserById(@PathVariable String id) {
+
+	        return serviceApplication.getUserById(id);
+
+	    }
 }

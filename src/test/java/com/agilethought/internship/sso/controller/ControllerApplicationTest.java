@@ -4,6 +4,7 @@ import com.agilethought.internship.sso.dto.LoginResponse;
 import com.agilethought.internship.sso.dto.NewUserResponse;
 import com.agilethought.internship.sso.dto.UpdateUserRequest;
 import com.agilethought.internship.sso.dto.UpdateUserResponse;
+import com.agilethought.internship.sso.dto.*;
 import com.agilethought.internship.sso.services.ServiceApplication;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -93,5 +94,15 @@ public class ControllerApplicationTest {
                 .andExpect(status().isOk());
 
     }   
+    public void testGetUserById() throws Exception {
+
+        String getMapping = "/users/1234";
+        when(serviceApplication.getUserById(anyString())).thenReturn(new UserDTO());
+        mockMvc.perform(
+                get(REQUEST_MAPPING + getMapping)
+                .contentType(APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+    }
 
 }
