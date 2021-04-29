@@ -1,6 +1,6 @@
 package com.agilethought.internship.sso.validator.user;
 
-import static com.agilethought.internship.sso.exception.ErrorMessage.*;
+import static com.agilethought.internship.sso.exception.errorhandling.ErrorMessage.*;
 import static com.agilethought.internship.sso.validator.ValidationUtils.isValidEmail;
 import static com.agilethought.internship.sso.validator.ValidationUtils.isValidString;
 import static com.agilethought.internship.sso.validator.ValidationUtils.isValidPassword;

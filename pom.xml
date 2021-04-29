@@ -126,7 +126,6 @@
 						<exclude>com/agilethought/internship/sso/exception/**/*</exclude>
 						<exclude>com/agilethought/internship/sso/dto/**/*</exclude>
 						<exclude>com/agilethought/internship/sso/mapper/**</exclude>
-						<exclude>com/agilethought/internship/sso/controller/GlobalExceptionHandler.class</exclude>
 			        </excludes>
 			       </configuration>
 			    <executions>

@@ -1,5 +1,6 @@
 package com.agilethought.internship.sso.services;
 
+import com.agilethought.internship.sso.exception.NotFoundException;
 import com.agilethought.internship.sso.dto.*;
 import com.agilethought.internship.sso.exception.UnauthorizedException;
 import com.agilethought.internship.sso.validator.Validator;
@@ -15,10 +16,12 @@ import com.agilethought.internship.sso.repository.RepositoryApplication;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-import static com.agilethought.internship.sso.exception.ErrorMessage.INVALID_CREDENTIALS;
-import static com.agilethought.internship.sso.exception.ErrorMessage.UNAVAILABLE_ENTITY;
-import static com.agilethought.internship.sso.exception.ErrorMessage.USER;
+import static com.agilethought.internship.sso.exception.errorhandling.ErrorMessage.INVALID_CREDENTIALS;
+import static com.agilethought.internship.sso.exception.errorhandling.ErrorMessage.UNAVAILABLE_ENTITY;
+import static com.agilethought.internship.sso.exception.errorhandling.ErrorMessage.USER;
+import static com.agilethought.internship.sso.exception.errorhandling.ErrorMessage.NOT_FOUND_RESOURCE;
 import static com.agilethought.internship.sso.services.PopulateFields.setLetterCases;
 
 @Service
@@ -67,7 +70,19 @@ public class ServiceApplicationimpl implements ServiceApplication {
 		log.info("ServiceApplicationimpl.getUsersByEmail - getUsersByEmail operation was successful: {}", users);
 		return new ArrayList<>();
 	}
+	
+	@Override
+	public void deleteUserById(String id) {
 
+		Optional<User> userFoundById = repositoryApplication.findById(id);
+		if (!userFoundById.isPresent())
+			throw new NotFoundException(
+					String.format(NOT_FOUND_RESOURCE, USER, id)
+			);
+		repositoryApplication.deleteById(id);
+
+	}
+	
 	@Override
 	public UpdateUserResponse updateUserById(UpdateUserRequest request, String id) {
 		request.setId(id);
