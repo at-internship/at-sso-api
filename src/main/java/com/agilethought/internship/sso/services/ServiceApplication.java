@@ -10,4 +10,5 @@ public interface ServiceApplication {
 	NewUserResponse createUser(NewUserRequest request);
 	List<UserDTO> getAllUsers();
 	UpdateUserResponse updateUserById(UpdateUserRequest request, String id);
+	LoginResponse loginUser(LoginRequest loginRequest);
 }
