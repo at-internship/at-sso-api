@@ -1,7 +1,7 @@
 package com.agilethought.internship.sso.validator;
 
 import com.agilethought.internship.sso.dto.LoginRequest;
-import com.agilethought.internship.sso.exception.BadRequestExceptionNew;
+import com.agilethought.internship.sso.exception.BadRequestException;
 import com.agilethought.internship.sso.exception.UnauthorizedException;
 import com.agilethought.internship.sso.validator.user.LoginValidator;
 import org.junit.Test;
@@ -19,7 +19,7 @@ public class LoginValidatorTest {
                 () -> {
                     loginRequest.setEmail(null);
                     // check if the email is null
-                    Exception exception = Assertions.assertThrows(BadRequestExceptionNew.class, () -> {
+                    Exception exception = Assertions.assertThrows(BadRequestException.class, () -> {
                         LoginValidator loginValidator = new LoginValidator();
                         loginValidator.validate(loginRequest);
                     });
@@ -30,7 +30,7 @@ public class LoginValidatorTest {
                 },
                 () -> {
                     loginRequest.setEmail("");
-                    Exception exception = Assertions.assertThrows(BadRequestExceptionNew.class, () -> {
+                    Exception exception = Assertions.assertThrows(BadRequestException.class, () -> {
                         LoginValidator loginValidator = new LoginValidator();
                         loginValidator.validate(loginRequest);
                     });
@@ -41,7 +41,7 @@ public class LoginValidatorTest {
                 },
                 () -> {
                     loginRequest.setEmail("  ");
-                    Exception exception = Assertions.assertThrows(BadRequestExceptionNew.class, () -> {
+                    Exception exception = Assertions.assertThrows(BadRequestException.class, () -> {
                         LoginValidator loginValidator = new LoginValidator();
                         loginValidator.validate(loginRequest);
                     });
@@ -83,7 +83,7 @@ public class LoginValidatorTest {
         Assertions.assertAll(
                 () -> {
                     loginRequest.setPassword(null);
-                    Exception errorMessagePassword = Assertions.assertThrows(BadRequestExceptionNew.class, () -> {
+                    Exception errorMessagePassword = Assertions.assertThrows(BadRequestException.class, () -> {
                         LoginValidator loginValidator = new LoginValidator();
                         loginValidator.validate(loginRequest);
                     });
@@ -91,7 +91,7 @@ public class LoginValidatorTest {
                 },
                 () -> {
                     loginRequest.setPassword("");
-                    Exception errorMessagePassword = Assertions.assertThrows(BadRequestExceptionNew.class, () -> {
+                    Exception errorMessagePassword = Assertions.assertThrows(BadRequestException.class, () -> {
                         LoginValidator loginValidator = new LoginValidator();
                         loginValidator.validate(loginRequest);
                     });
@@ -99,7 +99,7 @@ public class LoginValidatorTest {
                 },
                 () -> {
                     loginRequest.setPassword("  ");
-                    Exception errorMessagePassword = Assertions.assertThrows(BadRequestExceptionNew.class, () -> {
+                    Exception errorMessagePassword = Assertions.assertThrows(BadRequestException.class, () -> {
                         LoginValidator loginValidator = new LoginValidator();
                         loginValidator.validate(loginRequest);
                     });

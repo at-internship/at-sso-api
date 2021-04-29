@@ -1,5 +1,6 @@
 package com.agilethought.internship.sso.controller;
 
+import com.agilethought.internship.sso.dto.LoginResponse;
 import com.agilethought.internship.sso.dto.NewUserResponse;
 import com.agilethought.internship.sso.dto.UpdateUserRequest;
 import com.agilethought.internship.sso.dto.UpdateUserResponse;
@@ -66,5 +67,18 @@ public class ControllerApplicationTest {
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
+    
+    @Test
+    public void testLoginUser() throws Exception {
+
+        String postMapping = "/login";
+        when(serviceApplication.loginUser(any())).thenReturn(new LoginResponse());
+        mockMvc.perform(
+                post(REQUEST_MAPPING + postMapping)
+                        .content("{}")
+                .contentType(APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+    }   
 
 }
