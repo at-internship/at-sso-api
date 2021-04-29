@@ -1,6 +1,8 @@
 package com.agilethought.internship.sso.controller;
 
 import com.agilethought.internship.sso.dto.NewUserResponse;
+import com.agilethought.internship.sso.dto.UpdateUserRequest;
+import com.agilethought.internship.sso.dto.UpdateUserResponse;
 import com.agilethought.internship.sso.services.ServiceApplication;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,9 +19,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -43,7 +43,6 @@ public class ControllerApplicationTest {
         ).andExpect(status().isOk());
     }
 
-
     @Test
     public void itShouldCreateNewUser() throws Exception {
         String postMapping = "/users";
@@ -66,6 +65,19 @@ public class ControllerApplicationTest {
                 .contentType(APPLICATION_JSON))
                 .andExpect(status().isNoContent());
 
+    }
+
+    @Test
+    public void testPutUser() throws Exception {
+
+        String putMapping = "/users/1234";
+        when(serviceApplication.updateUserById(any(UpdateUserRequest.class), anyString()))
+                .thenReturn(new UpdateUserResponse());
+        mockMvc.perform(
+                put(REQUEST_MAPPING + putMapping)
+                        .content("{}")
+                        .contentType(APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
 
 }

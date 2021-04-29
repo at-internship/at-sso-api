@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.agilethought.internship.sso.dto.NewUserRequest;
 import com.agilethought.internship.sso.dto.NewUserResponse;
+import com.agilethought.internship.sso.dto.UpdateUserRequest;
+import com.agilethought.internship.sso.dto.UpdateUserResponse;
 import com.agilethought.internship.sso.dto.UserDTO;
 import com.agilethought.internship.sso.services.ServiceApplication;
 
@@ -63,6 +66,20 @@ public class ControllerApplication {
 	public void deleteUserById(@PathVariable String id) {
 
 		serviceApplication.deleteUserById(id);
+	}
+	
+	@ResponseStatus(HttpStatus.OK)
+	@PutMapping(value = "/users/{id}", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Update a User in the application")
+	@ApiResponses(value = {
+			@ApiResponse(code = 201, message = "Resource update successfully"),
+			@ApiResponse(code = 401, message = "Unauthorized"),
+			@ApiResponse(code = 403, message = "Access prohibited"),
+			@ApiResponse(code = 404, message = "Not Found"),
+	})
+	public UpdateUserResponse putUser(@RequestBody UpdateUserRequest request, @PathVariable String id) {
+
+		return serviceApplication.updateUserById(request, id);
 
 	}
 }

@@ -1,16 +1,15 @@
 package com.agilethought.internship.sso.services;
 
 import com.agilethought.internship.sso.exception.NotFoundException;
-import com.agilethought.internship.sso.dto.NewUserRequest;
+import com.agilethought.internship.sso.dto.*;
 import com.agilethought.internship.sso.validator.user.NewUserValidator;
+import com.agilethought.internship.sso.validator.user.UpdateUserValidator;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
-import com.agilethought.internship.sso.dto.UserDTO;
 import com.agilethought.internship.sso.mapper.UserMapping;
 import com.agilethought.internship.sso.model.User;
-import com.agilethought.internship.sso.dto.NewUserResponse;
 import com.agilethought.internship.sso.repository.RepositoryApplication;
 
 import java.util.ArrayList;
@@ -36,6 +35,9 @@ public class ServiceApplicationimpl implements ServiceApplication {
 
 	@Autowired
 	private NewUserValidator newUserValidator;
+
+	@Autowired
+	private UpdateUserValidator updateUserValidator;
 
 	public NewUserResponse createUser(NewUserRequest request) {
 		User user = orikaMapperFacade.map(request, User.class);
@@ -74,4 +76,13 @@ public class ServiceApplicationimpl implements ServiceApplication {
 
 	}
 	
+	@Override
+	public UpdateUserResponse updateUserById(UpdateUserRequest request, String id) {
+		request.setId(id);
+		User userUpdatedFields = orikaMapperFacade.map(request, User.class);
+		updateUserValidator.validate(userUpdatedFields);
+		setLetterCases(userUpdatedFields);
+		User updatedUser = repositoryApplication.save(userUpdatedFields);
+		return orikaMapperFacade.map(updatedUser, UpdateUserResponse.class);
+	}
 }
