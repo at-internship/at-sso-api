@@ -1,11 +1,10 @@
 package com.agilethought.internship.sso.services;
 
-import com.agilethought.internship.sso.dto.NewUserRequest;
-import com.agilethought.internship.sso.dto.NewUserResponse;
-import com.agilethought.internship.sso.dto.UserDTO;
+import com.agilethought.internship.sso.dto.*;
 import com.agilethought.internship.sso.model.User;
 import com.agilethought.internship.sso.repository.RepositoryApplication;
 import com.agilethought.internship.sso.validator.user.NewUserValidator;
+import com.agilethought.internship.sso.validator.user.UpdateUserValidator;
 import ma.glasnost.orika.MapperFacade;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,6 +29,9 @@ public class ServiceApplicationimplTest {
 
     @Mock
     private NewUserValidator newUserValidator;
+
+    @Mock
+    private UpdateUserValidator updateUserValidator;
 
     @InjectMocks
     private ServiceApplicationimpl serviceApplicationimpl;
@@ -63,6 +65,24 @@ public class ServiceApplicationimplTest {
         when(repositoryApplication.save(any())).thenReturn(new User());
         when(orikaMapperFacade.map(any(User.class), any())).thenReturn(new NewUserResponse());
         assertNotNull(serviceApplicationimpl.createUser(new NewUserRequest()));
+    }
+
+    @Test
+    public void testUpdateUserByIdSuccessfully() {
+
+        // Given
+        User mockUpdateUser = new User();
+        mockUpdateUser.setFirstName("");
+        mockUpdateUser.setLastName("");
+        mockUpdateUser.setEmail("");
+
+        // Then
+        when(orikaMapperFacade.map(any(UpdateUserRequest.class), any()))
+                .thenReturn(mockUpdateUser);
+        doNothing().when(updateUserValidator).validate(any());
+        when(repositoryApplication.save(any())).thenReturn(new User());
+        when(orikaMapperFacade.map(any(User.class), any())).thenReturn(new UpdateUserResponse());
+        assertNotNull(serviceApplicationimpl.updateUserById(new UpdateUserRequest(), ""));
     }
 
 }

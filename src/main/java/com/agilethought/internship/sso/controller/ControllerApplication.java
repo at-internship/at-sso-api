@@ -1,7 +1,6 @@
 package com.agilethought.internship.sso.controller;
 
-import com.agilethought.internship.sso.dto.NewUserRequest;
-import com.agilethought.internship.sso.dto.NewUserResponse;
+import com.agilethought.internship.sso.dto.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -10,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import com.agilethought.internship.sso.dto.UserDTO;
 import com.agilethought.internship.sso.services.ServiceApplication;
 import java.util.List;
 
@@ -49,5 +47,20 @@ public class ControllerApplication {
 	public List<UserDTO> getAllUsers() {
 		log.info("ControllerApplication.getAllUsers - Calling get operation");
 		return serviceApplication.getAllUsers();
+	}
+
+	@ResponseStatus(HttpStatus.OK)
+	@PutMapping(value = "/users/{id}", consumes = "application/json", produces = "application/json")
+	@ApiOperation(value = "Update a User in the application")
+	@ApiResponses(value = {
+			@ApiResponse(code = 201, message = "Resource update successfully"),
+			@ApiResponse(code = 401, message = "Unauthorized"),
+			@ApiResponse(code = 403, message = "Access prohibited"),
+			@ApiResponse(code = 404, message = "Not Found"),
+	})
+	public UpdateUserResponse putUser(@RequestBody UpdateUserRequest request, @PathVariable String id) {
+
+		return serviceApplication.updateUserById(request, id);
+
 	}
 }
