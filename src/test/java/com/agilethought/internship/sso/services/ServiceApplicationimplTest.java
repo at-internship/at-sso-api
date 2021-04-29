@@ -117,5 +117,27 @@ public class ServiceApplicationimplTest {
         when(orikaMapperFacade.map(any(User.class), any())).thenReturn(new UpdateUserResponse());
         assertNotNull(serviceApplicationimpl.updateUserById(new UpdateUserRequest(), ""));
     }
+    
+    @Test
+    public void testGetUserByIdSuccessfully() {
 
+        when(repositoryApplication.findById(anyString())).thenReturn(Optional.of(new User()));
+        when(orikaMapperFacade.map(any(), any())).thenReturn(new UserDTO());
+        UserDTO testResult = serviceApplicationimpl.getUserById(anyString());
+        assertNotNull(testResult);
+    }
+
+    @Test
+    public void testGetUserByIdWithIdNotFound() {
+
+        when(repositoryApplication.findById(anyString())).thenReturn(Optional.empty());
+        NotFoundException thrownException = assertThrows(
+                NotFoundException.class,
+                () -> serviceApplicationimpl.getUserById(anyString())
+        );
+        assertEquals(
+                String.format(NOT_FOUND_RESOURCE, USER, ""),
+                thrownException.getMessage()
+        );
+    }
 }

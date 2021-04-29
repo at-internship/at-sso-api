@@ -85,4 +85,15 @@ public class ServiceApplicationimpl implements ServiceApplication {
 		User updatedUser = repositoryApplication.save(userUpdatedFields);
 		return orikaMapperFacade.map(updatedUser, UpdateUserResponse.class);
 	}
+	
+	@Override
+	public UserDTO getUserById(String id) {
+
+		Optional<User> userFound = repositoryApplication.findById(id);
+		if (userFound.isPresent())
+			return orikaMapperFacade.map(userFound.get(), UserDTO.class);
+		throw new NotFoundException(
+				String.format(NOT_FOUND_RESOURCE, USER, id)
+		);
+	}
 }

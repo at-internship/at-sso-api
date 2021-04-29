@@ -15,4 +15,6 @@ public interface ServiceApplication {
 	void deleteUserById(String id);
 	
 	UpdateUserResponse updateUserById(UpdateUserRequest request, String id);
+	
+	UserDTO getUserById(String id);
 }
