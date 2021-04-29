@@ -1,5 +1,6 @@
 package com.agilethought.internship.sso.services;
 
+import com.agilethought.internship.sso.exception.NotFoundException;
 import com.agilethought.internship.sso.dto.*;
 import com.agilethought.internship.sso.validator.user.NewUserValidator;
 import com.agilethought.internship.sso.validator.user.UpdateUserValidator;
@@ -13,7 +14,10 @@ import com.agilethought.internship.sso.repository.RepositoryApplication;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+import static com.agilethought.internship.sso.exception.errorhandling.ErrorMessage.NOT_FOUND_RESOURCE;
+import static com.agilethought.internship.sso.exception.errorhandling.ErrorMessage.USER;
 import static com.agilethought.internship.sso.services.PopulateFields.setLetterCases;
 
 @Service
@@ -68,5 +72,16 @@ public class ServiceApplicationimpl implements ServiceApplication {
 		setLetterCases(userUpdatedFields);
 		User updatedUser = repositoryApplication.save(userUpdatedFields);
 		return orikaMapperFacade.map(updatedUser, UpdateUserResponse.class);
+	}
+	
+	@Override
+	public UserDTO getUserById(String id) {
+
+		Optional<User> userFound = repositoryApplication.findById(id);
+		if (userFound.isPresent())
+			return orikaMapperFacade.map(userFound.get(), UserDTO.class);
+		throw new NotFoundException(
+				String.format(NOT_FOUND_RESOURCE, USER, id)
+		);
 	}
 }
