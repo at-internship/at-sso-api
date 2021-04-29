@@ -2,7 +2,6 @@ package com.agilethought.internship.sso.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,4 +16,4 @@ public class NewUserResponse {
     )
     private String id;
 
-} 
+}
