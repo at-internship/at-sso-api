@@ -13,8 +13,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.ArrayList;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -50,6 +53,18 @@ public class ControllerApplicationTest {
                         .content("{}")
                         .contentType(APPLICATION_JSON)
         ).andExpect(status().isCreated());
+
+    }
+    
+    @Test
+    public void itShouldDeleteUserById() throws Exception {
+
+        String deleteMapping = "/users/1234";
+        doNothing().when(serviceApplication).deleteUserById(anyString());
+        mockMvc.perform(
+                delete(REQUEST_MAPPING + deleteMapping)
+                .contentType(APPLICATION_JSON))
+                .andExpect(status().isNoContent());
 
     }
 
