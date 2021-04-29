@@ -3,9 +3,9 @@ package com.agilethought.internship.sso.validator.user;
 import com.agilethought.internship.sso.exception.BadRequestException;
 import com.agilethought.internship.sso.model.User;
 import org.junit.Test;
-import com.agilethought.internship.sso.validator.user.UserDataValidator;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static com.agilethought.internship.sso.exception.errorhandling.ErrorMessage.VALIDATION_ERROR;
 
 public class UserDataValidatorTest {
     private User user = new User();
@@ -26,7 +26,7 @@ public class UserDataValidatorTest {
                         userDataValidator.validate(user);
                     });
                     assertEquals(
-                            "One or more fields are invalid",
+                            VALIDATION_ERROR,
                             errorMessageException.getMessage()
                     );
                 },
@@ -38,7 +38,7 @@ public class UserDataValidatorTest {
                         userDataValidator.validate(user);
                     });
                     assertEquals(
-                            "One or more fields are invalid",
+                            VALIDATION_ERROR,
                             errorMessageException.getMessage()
                     );
                 },
@@ -50,7 +50,7 @@ public class UserDataValidatorTest {
                         userDataValidator.validate(user);
                     });
                     assertEquals(
-                            "One or more fields are invalid",
+                            VALIDATION_ERROR,
                             errorMessageException.getMessage()
                     );
                 },
@@ -62,7 +62,7 @@ public class UserDataValidatorTest {
                         userDataValidator.validate(user);
                     });
                     assertEquals(
-                            "One or more fields are invalid",
+                            VALIDATION_ERROR,
                             errorMessageException.getMessage()
                     );
                 }
@@ -84,7 +84,7 @@ public class UserDataValidatorTest {
                         userDataValidator.validate(user);
                     });
                     assertEquals(
-                            "One or more fields are invalid",
+                            VALIDATION_ERROR,
                             exception.getMessage()
                     );
                 },
@@ -95,7 +95,7 @@ public class UserDataValidatorTest {
                         userDataValidator.validate(user);
                     });
                     assertEquals(
-                            "One or more fields are invalid",
+                            VALIDATION_ERROR,
                             exception.getMessage()
                     );
                 },
@@ -106,7 +106,7 @@ public class UserDataValidatorTest {
                         userDataValidator.validate(user);
                     });
                     assertEquals(
-                            "One or more fields are invalid",
+                            VALIDATION_ERROR,
                             exception.getMessage()
                     );
                 }
@@ -128,7 +128,7 @@ public class UserDataValidatorTest {
                         userDataValidator.validate(user);
                     });
                     assertEquals(
-                            "One or more fields are invalid",
+                            VALIDATION_ERROR,
                             exception.getMessage()
                     );
                 },
@@ -139,7 +139,7 @@ public class UserDataValidatorTest {
                         userDataValidator.validate(user);
                     });
                     assertEquals(
-                            "One or more fields are invalid",
+                            VALIDATION_ERROR,
                             exception.getMessage()
                     );
                 },
@@ -150,7 +150,7 @@ public class UserDataValidatorTest {
                         userDataValidator.validate(user);
                     });
                     assertEquals(
-                            "One or more fields are invalid",
+                            VALIDATION_ERROR,
                             exception.getMessage()
                     );
                 }
@@ -172,7 +172,7 @@ public class UserDataValidatorTest {
                         userDataValidator.validate(user);
                     });
                     assertEquals(
-                            "One or more fields are invalid",
+                            VALIDATION_ERROR,
                             exception.getMessage()
                     );
                 },
@@ -183,7 +183,7 @@ public class UserDataValidatorTest {
                         userDataValidator.validate(user);
                     });
                     assertEquals(
-                            "One or more fields are invalid",
+                            VALIDATION_ERROR,
                             exception.getMessage()
                     );
                 },
@@ -194,7 +194,7 @@ public class UserDataValidatorTest {
                         userDataValidator.validate(user);
                     });
                     assertEquals(
-                            "One or more fields are invalid",
+                            VALIDATION_ERROR,
                             exception.getMessage()
                     );
                 },
@@ -205,7 +205,7 @@ public class UserDataValidatorTest {
                         userDataValidator.validate(user);
                     });
                     assertEquals(
-                            "One or more fields are invalid",
+                            VALIDATION_ERROR,
                             exception.getMessage()
                     );
                 },
@@ -216,7 +216,7 @@ public class UserDataValidatorTest {
                         userDataValidator.validate(user);
                     });
                     assertEquals(
-                            "One or more fields are invalid",
+                            VALIDATION_ERROR,
                             exception.getMessage()
                     );
                 }
@@ -238,7 +238,7 @@ public class UserDataValidatorTest {
                         userDataValidator.validate(user);
                     });
                     assertEquals(
-                            "One or more fields are invalid",
+                            VALIDATION_ERROR,
                             errorMessagePassword.getMessage()
                     );
                 },
@@ -249,7 +249,7 @@ public class UserDataValidatorTest {
                         userDataValidator.validate(user);
                     });
                     assertEquals(
-                            "One or more fields are invalid",
+                            VALIDATION_ERROR,
                             errorMessagePassword.getMessage()
                     );
                 },
@@ -260,7 +260,7 @@ public class UserDataValidatorTest {
                         userDataValidator.validate(user);
                     });
                     assertEquals(
-                            "One or more fields are invalid",
+                            VALIDATION_ERROR,
                             errorMessagePassword.getMessage()
                     );
                 },
@@ -271,7 +271,7 @@ public class UserDataValidatorTest {
                         userDataValidator.validate(user);
                     });
                     assertEquals(
-                            "One or more fields are invalid",
+                            VALIDATION_ERROR,
                             errorMessagePassword.getMessage()
                     );
                 },
@@ -282,7 +282,7 @@ public class UserDataValidatorTest {
                         userDataValidator.validate(user);
                     });
                     assertEquals(
-                            "One or more fields are invalid",
+                            VALIDATION_ERROR,
                             errorMessagePassword.getMessage()
                     );
                 },
@@ -293,7 +293,7 @@ public class UserDataValidatorTest {
                         userDataValidator.validate(user);
                     });
                     assertEquals(
-                            "One or more fields are invalid",
+                            VALIDATION_ERROR,
                             errorMessagePassword.getMessage()
                     );
                 }
@@ -315,7 +315,7 @@ public class UserDataValidatorTest {
                         userDataValidator.validate(user);
                     });
                     assertEquals(
-                            "One or more fields are invalid",
+                            VALIDATION_ERROR,
                             errorMessageStatus.getMessage()
                     );
                 },
@@ -326,7 +326,7 @@ public class UserDataValidatorTest {
                         userDataValidator.validate(user);
                     });
                     assertEquals(
-                            "One or more fields are invalid",
+                            VALIDATION_ERROR,
                             errorMessageStatus.getMessage()
                     );
                 },
@@ -337,7 +337,7 @@ public class UserDataValidatorTest {
                         userDataValidator.validate(user);
                     });
                     assertEquals(
-                            "One or more fields are invalid",
+                            VALIDATION_ERROR,
                             errorMessageStatus.getMessage()
                     );
                 },
@@ -348,7 +348,7 @@ public class UserDataValidatorTest {
                         userDataValidator.validate(user);
                     });
                     assertEquals(
-                            "One or more fields are invalid",
+                            VALIDATION_ERROR,
                             errorMessageStatus.getMessage()
                     );
                 },
@@ -359,7 +359,7 @@ public class UserDataValidatorTest {
                         userDataValidator.validate(user);
                     });
                     assertEquals(
-                            "One or more fields are invalid",
+                            VALIDATION_ERROR,
                             errorMessageStatus.getMessage()
                     );
                 },
