@@ -1,16 +1,16 @@
 package com.agilethought.internship.sso.validator.user;
 
 import static com.agilethought.internship.sso.exception.ErrorMessage.*;
-import static com.agilethought.internship.sso.validator.user.ValidationUtils.isValidPassword;
-import static com.agilethought.internship.sso.validator.user.ValidationUtils.isValidString;
-
+import static com.agilethought.internship.sso.validator.ValidationUtils.isValidEmail;
+import static com.agilethought.internship.sso.validator.ValidationUtils.isValidString;
+import static com.agilethought.internship.sso.validator.ValidationUtils.isValidPassword;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.agilethought.internship.sso.validator.Validator;
 import org.springframework.stereotype.Service;
 
-import com.agilethought.internship.sso.exception.BadRequestExceptionNew;
+import com.agilethought.internship.sso.exception.BadRequestException;
 import com.agilethought.internship.sso.exception.GlobalExceptionBody.ErrorDetails;
 import com.agilethought.internship.sso.dto.LoginRequest;
 import com.agilethought.internship.sso.exception.UnauthorizedException;
@@ -29,7 +29,7 @@ public class LoginValidator implements Validator<LoginRequest> {
 		validateEmail(loginRequest.getEmail(), errorDetails);
 		validatePassword(loginRequest.getPassword(), errorDetails);
 		if (CollectionUtils.isNotEmpty(errorDetails))
-			throw new BadRequestExceptionNew(VALIDATION_ERROR, errorDetails);
+			throw new BadRequestException(VALIDATION_ERROR, errorDetails);
 	}
 
 	private void validateEmail(String email, List<ErrorDetails> errorDetails) {
@@ -41,7 +41,7 @@ public class LoginValidator implements Validator<LoginRequest> {
 			errorDetails.add(error);
 			return;
 		}
-		if (!ValidationUtils.isValidEmail(email))
+		if (!isValidEmail(email))
 			throw new UnauthorizedException(INVALID_CREDENTIALS);
 
 	}

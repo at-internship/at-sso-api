@@ -40,6 +40,7 @@ public class ServiceApplicationimpl implements ServiceApplication {
 	@Autowired
 	private UpdateUserValidator updateUserValidator;
 	
+	@Autowired
 	private Validator<LoginRequest> loginValidator;
 
 	public NewUserResponse createUser(NewUserRequest request) {
