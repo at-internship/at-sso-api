@@ -63,7 +63,19 @@ public class ServiceApplicationimpl implements ServiceApplication {
 		log.info("ServiceApplicationimpl.getUsersByEmail - getUsersByEmail operation was successful: {}", users);
 		return new ArrayList<>();
 	}
+	
+	@Override
+	public void deleteUserById(String id) {
 
+		Optional<User> userFoundById = repositoryApplication.findById(id);
+		if (!userFoundById.isPresent())
+			throw new NotFoundException(
+					String.format(NOT_FOUND_RESOURCE, USER, id)
+			);
+		repositoryApplication.deleteById(id);
+
+	}
+	
 	@Override
 	public UpdateUserResponse updateUserById(UpdateUserRequest request, String id) {
 		request.setId(id);
