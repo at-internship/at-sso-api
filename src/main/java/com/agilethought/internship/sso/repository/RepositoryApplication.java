@@ -18,5 +18,5 @@ public interface RepositoryApplication extends MongoRepository<User, String> {
 	List<User> findUserWithCredentials(String email, String password);
 
 	boolean existsByEmail(String email);
-
+	
 }
