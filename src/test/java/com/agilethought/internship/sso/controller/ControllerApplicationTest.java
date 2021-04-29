@@ -1,5 +1,9 @@
 package com.agilethought.internship.sso.controller;
 
+import com.agilethought.internship.sso.dto.LoginResponse;
+import com.agilethought.internship.sso.dto.NewUserResponse;
+import com.agilethought.internship.sso.dto.UpdateUserRequest;
+import com.agilethought.internship.sso.dto.UpdateUserResponse;
 import com.agilethought.internship.sso.dto.*;
 import com.agilethought.internship.sso.services.ServiceApplication;
 import org.junit.Test;
@@ -79,6 +83,17 @@ public class ControllerApplicationTest {
     }
     
     @Test
+    public void testLoginUser() throws Exception {
+
+        String postMapping = "/login";
+        when(serviceApplication.loginUser(any())).thenReturn(new LoginResponse());
+        mockMvc.perform(
+                post(REQUEST_MAPPING + postMapping)
+                        .content("{}")
+                .contentType(APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+    }   
     public void testGetUserById() throws Exception {
 
         String getMapping = "/users/1234";

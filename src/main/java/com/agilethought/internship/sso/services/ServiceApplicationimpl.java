@@ -2,6 +2,8 @@ package com.agilethought.internship.sso.services;
 
 import com.agilethought.internship.sso.exception.NotFoundException;
 import com.agilethought.internship.sso.dto.*;
+import com.agilethought.internship.sso.exception.UnauthorizedException;
+import com.agilethought.internship.sso.validator.Validator;
 import com.agilethought.internship.sso.validator.user.NewUserValidator;
 import com.agilethought.internship.sso.validator.user.UpdateUserValidator;
 import ma.glasnost.orika.MapperFacade;
@@ -16,8 +18,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static com.agilethought.internship.sso.exception.errorhandling.ErrorMessage.NOT_FOUND_RESOURCE;
+import static com.agilethought.internship.sso.exception.errorhandling.ErrorMessage.INVALID_CREDENTIALS;
+import static com.agilethought.internship.sso.exception.errorhandling.ErrorMessage.UNAVAILABLE_ENTITY;
 import static com.agilethought.internship.sso.exception.errorhandling.ErrorMessage.USER;
+import static com.agilethought.internship.sso.exception.errorhandling.ErrorMessage.NOT_FOUND_RESOURCE;
 import static com.agilethought.internship.sso.services.PopulateFields.setLetterCases;
 
 @Service
@@ -38,6 +42,9 @@ public class ServiceApplicationimpl implements ServiceApplication {
 
 	@Autowired
 	private UpdateUserValidator updateUserValidator;
+	
+	@Autowired
+	private Validator<LoginRequest> loginValidator;
 
 	public NewUserResponse createUser(NewUserRequest request) {
 		User user = orikaMapperFacade.map(request, User.class);
@@ -87,6 +94,24 @@ public class ServiceApplicationimpl implements ServiceApplication {
 	}
 	
 	@Override
+	public LoginResponse loginUser(LoginRequest loginRequest) {
+
+		loginValidator.validate(loginRequest);
+		List<User> users = repositoryApplication.findUserWithCredentials(
+				loginRequest.getEmail(),
+				loginRequest.getPassword()
+		);
+		if (!users.isEmpty()) {
+			log.info("UserServiceImpl.loginUser: got user " + users.get(0) + " from Database");
+			User user = users.get(0);
+			if (user.getStatus() == 0)
+				throw new UnauthorizedException(
+						String.format(UNAVAILABLE_ENTITY, USER)
+				);
+			return orikaMapperFacade.map(user, LoginResponse.class);
+		}
+		throw new UnauthorizedException(INVALID_CREDENTIALS);
+	}
 	public UserDTO getUserById(String id) {
 
 		Optional<User> userFound = repositoryApplication.findById(id);

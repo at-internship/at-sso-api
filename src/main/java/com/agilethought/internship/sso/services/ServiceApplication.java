@@ -15,6 +15,6 @@ public interface ServiceApplication {
 	void deleteUserById(String id);
 	
 	UpdateUserResponse updateUserById(UpdateUserRequest request, String id);
-	
+	LoginResponse loginUser(LoginRequest loginRequest);	
 	UserDTO getUserById(String id);
 }
