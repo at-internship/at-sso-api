@@ -5,23 +5,30 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+import java.util.List;
+
+import static com.agilethought.internship.sso.exception.GlobalExceptionBody.ErrorDetails;
 
 @Getter
 @Setter
+@ToString
+@NoArgsConstructor
 @ResponseStatus(HttpStatus.BAD_REQUEST)
 public class BadRequestException extends RuntimeException{
-	
+
 	private static final long serialVersionUID = 1L;
-	private int status;
-	private HttpStatus error;
-	private String message;
-	private String path;	
-	
-	public BadRequestException(String message, String path,HttpStatus r){
-		setError(HttpStatus.BAD_REQUEST);
-		setMessage(message);
-		setPath(path);		
-		setStatus(r.value());
+	private List<ErrorDetails> errorDetails;
+
+	public BadRequestException(String message) {
+		super(message);
+	}
+
+	public BadRequestException(String message, List<ErrorDetails> details) {
+		super(message);
+		this.errorDetails = details;
 	}
 	
-}//End class
+}

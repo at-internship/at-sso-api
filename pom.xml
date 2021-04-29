@@ -102,6 +102,16 @@
 			<version>3.0.4</version>
 			<type>maven-plugin</type>
 		</dependency>
+		<dependency>
+			<groupId>net.rakugakibox.spring.boot</groupId>
+			<artifactId>orika-spring-boot-starter</artifactId>
+			<version>1.9.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jacoco</groupId>
+			<artifactId>org.jacoco.agent</artifactId>
+			<version>0.8.6</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -119,15 +129,17 @@
 			<plugin>
 			    <groupId>org.jacoco</groupId>
 			    <artifactId>jacoco-maven-plugin</artifactId>
-			    <version>0.8.2</version>
-			     <configuration> 
-			        <excludes> 
-			         <exclude>com.agilethought.internship.sso.model</exclude> 
-			         <exclude>com.agilethought.internship.sso.domain</exclude> 
-			         <exclude>com.agilethought.internship.sso.swagger</exclude> 
-			         <exclude>com.agilethought.internship.sso.errorhandling</exclude> 
-			        </excludes> 
-			       </configuration> 
+			    <version>0.8.6</version>
+			     <configuration>
+			        <excludes>
+						<exclude>com/agilethought/internship/sso/config/**/*</exclude>
+						<exclude>com/agilethought/internship/sso/model/**/*</exclude>
+						<exclude>com/agilethought/internship/sso/repository/**/*</exclude>
+						<exclude>com/agilethought/internship/sso/exception/**/*</exclude>
+						<exclude>com/agilethought/internship/sso/dto/**/*</exclude>
+						<exclude>com/agilethought/internship/sso/mapper/**</exclude>
+			        </excludes>
+			       </configuration>
 			    <executions>
 				<execution>
 				    <goals>

@@ -4,7 +4,7 @@ import java.util.List;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
-import com.agilethought.internship.sso.domain.UserDTO;
+import com.agilethought.internship.sso.dto.UserDTO;
 import com.agilethought.internship.sso.model.User;
 
 @Repository
@@ -14,8 +14,8 @@ public interface RepositoryApplication extends MongoRepository<User, String> {
 
 	UserDTO findById();
 
-	@Query("{ 'email' : ?0 }")
-	List<UserDTO> findUsersByEmail(String email);
+	@Query("{ 'email' : ?0, 'password' : ?1 }")
+	List<User> findUserWithCredentials(String email, String password);
 
 	boolean existsByEmail(String email);
 

@@ -1,44 +1,67 @@
 package com.agilethought.internship.sso.controller;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+
+import com.agilethought.internship.sso.exception.*;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-import com.agilethought.internship.sso.exception.ExceptionResponse;
-import com.agilethought.internship.sso.model.ApiError;
-import com.agilethought.internship.sso.exception.errrohandling.HttpExceptionMessage;
-import com.agilethought.internship.sso.exception.BadRequestException;
 
 @Order(Ordered.HIGHEST_PRECEDENCE)
-@RestControllerAdvice
+@ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-	@Override
-	public ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers,
-			HttpStatus status, WebRequest request) {
+	static final String URI_LABEL = "uri=";
 
-		String path = request.getDescription(false).substring(4);
-		return buildResponseEntity(
-				new ApiError(HttpStatus.BAD_REQUEST, 400, HttpExceptionMessage.BAD_REQUEST_JSON, path));
+	@ExceptionHandler(value = { NotFoundException.class })
+	protected ResponseEntity<Object> handleNotFound(NotFoundException ex, WebRequest request) {
+		GlobalExceptionBody body = new GlobalExceptionBody();
+		body.setTimestamp(LocalDateTime.now());
+		body.setStatus(HttpStatus.NOT_FOUND.value());
+		body.setError(HttpStatus.NOT_FOUND.getReasonPhrase());
+		body.setMessage(ex.getMessage());
+		body.setPath(request.getDescription(false).replace(URI_LABEL, ""));
+		return handleExceptionInternal(ex, body, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
 	}
 
-	private ResponseEntity<Object> buildResponseEntity(ApiError apiError) {
-		return new ResponseEntity<>(apiError, HttpStatus.valueOf(apiError.getStatus()));
+	@ExceptionHandler(value = { BadRequestException.class })
+	protected ResponseEntity<Object> handleBadRequest(BadRequestException ex, WebRequest request) {
+		GlobalExceptionBody body = new GlobalExceptionBody();
+		body.setTimestamp(LocalDateTime.now());
+		body.setStatus(HttpStatus.BAD_REQUEST.value());
+		body.setError(HttpStatus.BAD_REQUEST.getReasonPhrase());
+		body.setMessage(ex.getMessage());
+		body.setPath(request.getDescription(false).replace(URI_LABEL, ""));
+		body.setDetails(ex.getErrorDetails());
+		return handleExceptionInternal(ex, body, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
 	}
 
-	@ExceptionHandler
-	public final ResponseEntity<ExceptionResponse> handleBadRequestException(BadRequestException e) {
-
-		ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), e.getStatus(), HttpStatus.BAD_REQUEST,
-				e.getMessage(), e.getPath());
-		return new ResponseEntity<ExceptionResponse>(exceptionResponse, HttpStatus.BAD_REQUEST);
+	@ExceptionHandler(value = { UnauthorizedException.class })
+	protected ResponseEntity<Object> handleBadRequest(UnauthorizedException ex, WebRequest request) {
+		GlobalExceptionBody body = new GlobalExceptionBody();
+		body.setTimestamp(LocalDateTime.now());
+		body.setStatus(HttpStatus.UNAUTHORIZED.value());
+		body.setError(HttpStatus.UNAUTHORIZED.getReasonPhrase());
+		body.setMessage(ex.getMessage());
+		body.setPath(request.getDescription(false).replace(URI_LABEL, ""));
+		return handleExceptionInternal(ex, body, new HttpHeaders(), HttpStatus.UNAUTHORIZED, request);
 	}
 
-}// End class
+	@ExceptionHandler(value = { Exception.class })
+	protected ResponseEntity<Object> handleBadRequest(Exception ex, WebRequest request) {
+		GlobalExceptionBody body = new GlobalExceptionBody();
+		body.setTimestamp(LocalDateTime.now());
+		body.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+		body.setError(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
+		body.setMessage(ex.getMessage());
+		body.setPath(request.getDescription(false).replace(URI_LABEL, ""));
+		return handleExceptionInternal(ex, body, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
+	}
+
+}

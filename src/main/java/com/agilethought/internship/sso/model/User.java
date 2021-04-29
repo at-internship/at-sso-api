@@ -9,21 +9,21 @@ import lombok.Data;
 @Document(collection = "users") 
 @Data
 public class User {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private String id;
-	
-	private String name;
-	
+
+	private Integer type;
+
 	private String firstName;
-	
+
 	private String lastName;
-	
+
 	private String email;
-	
+
 	private String password;
-	
+
 	private Integer status;
 
 }
