@@ -6,6 +6,8 @@ import com.agilethought.internship.sso.repository.RepositoryApplication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Locale;
+
 import static com.agilethought.internship.sso.exception.errorhandling.ErrorMessage.ALREADY_EXISTING_EMAIL;
 
 @Service
@@ -18,7 +20,7 @@ public class NewUserValidator {
 
     public void validate(User user) {
         userDataValidator.validate(user);
-        validateUniqueEmail(user.getEmail());
+        validateUniqueEmail(user.getEmail().toLowerCase());
     }
 
     private void validateUniqueEmail(String email) {
