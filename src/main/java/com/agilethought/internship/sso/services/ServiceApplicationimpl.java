@@ -92,26 +92,7 @@ public class ServiceApplicationimpl implements ServiceApplication {
 		User updatedUser = repositoryApplication.save(userUpdatedFields);
 		return orikaMapperFacade.map(updatedUser, UpdateUserResponse.class);
 	}
-	
-	@Override
-	public LoginResponse loginUser(LoginRequest loginRequest) {
 
-		loginValidator.validate(loginRequest);
-		List<User> users = repositoryApplication.findUserWithCredentials(
-				loginRequest.getEmail(),
-				loginRequest.getPassword()
-		);
-		if (!users.isEmpty()) {
-			log.info("UserServiceImpl.loginUser: got user " + users.get(0) + " from Database");
-			User user = users.get(0);
-			if (user.getStatus() == 0)
-				throw new UnauthorizedException(
-						String.format(UNAVAILABLE_ENTITY, USER)
-				);
-			return orikaMapperFacade.map(user, LoginResponse.class);
-		}
-		throw new UnauthorizedException(INVALID_CREDENTIALS);
-	}
 	public UserDTO getUserById(String id) {
 
 		Optional<User> userFound = repositoryApplication.findById(id);

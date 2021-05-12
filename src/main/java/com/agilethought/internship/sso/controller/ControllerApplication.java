@@ -84,17 +84,6 @@ public class ControllerApplication {
 		return serviceApplication.updateUserById(request, id);
 
 	}
-	@ResponseStatus(HttpStatus.OK)
-    @PostMapping(value = "/login")
-    @ApiOperation(value = "Let the user log into the application")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Search in the database without parameters"),
-            @ApiResponse(code = 401, message = "Unauthorized"),
-            @ApiResponse(code = 403, message = "Access prohibited"),
-    })
-    public LoginResponse loginUser(@RequestBody LoginRequest loginRequest) {
-    	return serviceApplication.loginUser(loginRequest);
-    }
 	
 	 @GetMapping("/users/{id}")
 	    @ResponseStatus(HttpStatus.OK)

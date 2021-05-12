@@ -11,6 +11,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -33,6 +34,9 @@ public class ControllerApplicationTest {
 
     @MockBean
     private ServiceApplication serviceApplication;
+
+    @MockBean
+    private AuthenticationManager authenticationManagerBean;
 
     private static final String REQUEST_MAPPING = "/api/v1";
 
@@ -81,19 +85,7 @@ public class ControllerApplicationTest {
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
-    
-    @Test
-    public void testLoginUser() throws Exception {
 
-        String postMapping = "/login";
-        when(serviceApplication.loginUser(any())).thenReturn(new LoginResponse());
-        mockMvc.perform(
-                post(REQUEST_MAPPING + postMapping)
-                        .content("{}")
-                .contentType(APPLICATION_JSON))
-                .andExpect(status().isOk());
-
-    }   
     public void testGetUserById() throws Exception {
 
         String getMapping = "/users/1234";
