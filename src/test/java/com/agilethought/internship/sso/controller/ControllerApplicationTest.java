@@ -11,6 +11,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -33,6 +34,9 @@ public class ControllerApplicationTest {
 
     @MockBean
     private ServiceApplication serviceApplication;
+
+    @MockBean
+    private AuthenticationManager authenticationManagerBean;
 
     private static final String REQUEST_MAPPING = "/api/v1";
 
