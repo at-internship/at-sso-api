@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class UserAuthProviderService implements AuthenticationManager {
+
     @Autowired
     private RepositoryApplication repositoryApplication;
 

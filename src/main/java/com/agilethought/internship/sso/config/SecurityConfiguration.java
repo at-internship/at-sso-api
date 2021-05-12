@@ -15,12 +15,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-	private static final String TOKEN_VALIDATION_ENDPOINT = "/oauth/token";
+	private static final String TOKEN_CREATION_ENDPOINT = "/api/v1/login";
 
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
-		http.csrf().disable().authorizeRequests().antMatchers(TOKEN_VALIDATION_ENDPOINT)
-				.permitAll();
+		http.csrf()
+				.disable()
+				.authorizeRequests()
+				.antMatchers(TOKEN_CREATION_ENDPOINT).permitAll();
 	}
 
 	@Bean

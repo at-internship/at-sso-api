@@ -81,19 +81,7 @@ public class ControllerApplicationTest {
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
-    
-    @Test
-    public void testLoginUser() throws Exception {
 
-        String postMapping = "/login";
-        when(serviceApplication.loginUser(any())).thenReturn(new LoginResponse());
-        mockMvc.perform(
-                post(REQUEST_MAPPING + postMapping)
-                        .content("{}")
-                .contentType(APPLICATION_JSON))
-                .andExpect(status().isOk());
-
-    }   
     public void testGetUserById() throws Exception {
 
         String getMapping = "/users/1234";

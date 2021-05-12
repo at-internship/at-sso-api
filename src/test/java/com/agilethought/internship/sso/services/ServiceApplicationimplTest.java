@@ -125,77 +125,7 @@ public class ServiceApplicationimplTest {
         when(orikaMapperFacade.map(any(User.class), any())).thenReturn(new UpdateUserResponse());
         assertNotNull(serviceApplicationimpl.updateUserById(new UpdateUserRequest(), ""));
     }
-    
-    @Test
-    public void testLoginUserWithValidCredentialsAndAvailable() {
 
-        // Given
-        LoginRequest mockLoginRequest = new LoginRequest();
-        mockLoginRequest.setEmail("");
-        mockLoginRequest.setPassword("");
-
-        List<User> mockUsersList = new ArrayList<>();
-        mockUsersList.add(new User());
-        mockUsersList.get(0).setStatus(1);
-
-        // Then
-        doNothing().when(loginValidator).validate(any());
-        when(repositoryApplication.findUserWithCredentials(anyString(), anyString()))
-                .thenReturn(mockUsersList);
-        when(orikaMapperFacade.map(any(), any())).thenReturn(new LoginResponse());
-        LoginResponse testResult = serviceApplicationimpl.loginUser(mockLoginRequest);
-        assertNotNull(testResult);
-
-    }
-
-    @Test
-    public void testLoginUserWithValidCredentialsAndUnavailable() {
-
-        // Given
-        LoginRequest mockLoginRequest = new LoginRequest();
-        mockLoginRequest.setEmail("");
-        mockLoginRequest.setPassword("");
-
-        List<User> mockUsersList = new ArrayList<>();
-        mockUsersList.add(new User());
-        mockUsersList.get(0).setStatus(0);
-
-        // Then
-        doNothing().when(loginValidator).validate(any());
-        when(repositoryApplication.findUserWithCredentials(anyString(), anyString()))
-                .thenReturn(mockUsersList);
-        UnauthorizedException thrownException = assertThrows(
-                UnauthorizedException.class,
-                () -> serviceApplicationimpl.loginUser(mockLoginRequest)
-        );
-        assertEquals(
-                String.format(UNAVAILABLE_ENTITY, USER),
-                thrownException.getMessage()
-        );
-
-    }
-
-    @Test
-    public void testLoginUserWithInvalidCredentials() {
-
-        // Given
-        LoginRequest mockLoginRequest = new LoginRequest();
-        mockLoginRequest.setEmail("");
-        mockLoginRequest.setPassword("");
-
-        // Then
-        doNothing().when(loginValidator).validate(any());
-        when(repositoryApplication.findUserWithCredentials(anyString(), anyString()))
-                .thenReturn(new ArrayList<>());
-        UnauthorizedException thrownException = assertThrows(
-                UnauthorizedException.class,
-                () -> serviceApplicationimpl.loginUser(mockLoginRequest)
-        );
-        assertEquals(
-                INVALID_CREDENTIALS,
-                thrownException.getMessage()
-        );
-    }
     public void testGetUserByIdSuccessfully() {
 
         when(repositoryApplication.findById(anyString())).thenReturn(Optional.of(new User()));

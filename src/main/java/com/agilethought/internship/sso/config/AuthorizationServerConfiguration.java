@@ -1,6 +1,6 @@
 package com.agilethought.internship.sso.config;
 
-import com.agilethought.internship.sso.services.security.CustomAccessTokenConverter;
+import com.agilethought.internship.sso.services.security.CustomTokenAccessEnhancer;
 import com.agilethought.internship.sso.services.security.CustomUserDetailsService;
 import com.agilethought.internship.sso.services.security.UserAuthProviderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +13,12 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
-import org.springframework.security.oauth2.provider.token.AccessTokenConverter;
+import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 
 @Configuration
 @EnableAuthorizationServer
 public class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {
+
     @Autowired
     private UserAuthProviderService userAuthProviderService;
 
@@ -35,7 +36,8 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
-        security.allowFormAuthenticationForClients()
+        security
+                .allowFormAuthenticationForClients()
                 .checkTokenAccess("isAuthenticated()");
     }
 
@@ -52,16 +54,16 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
         endpoints
-                .pathMapping("oauth/token", "/api/v1/login")
+                .pathMapping("/oauth/token", "/api/v1/login")
                 //.pathMapping("oauth/check_token", "/api/v1/tokens") Ale
                 //.tokenStore(tokenStoreService) Gras
                 .authenticationManager(userAuthProviderService)
                 .userDetailsService(userDetailsService)
-                .accessTokenConverter(accessTokenConverter());
+                .tokenEnhancer(getCustomTokenAccessTokenEnhancer());
     }
 
     @Bean
-    public AccessTokenConverter accessTokenConverter() {
-        return new CustomAccessTokenConverter();
+    public TokenEnhancer getCustomTokenAccessTokenEnhancer() {
+        return new CustomTokenAccessEnhancer();
     }
 }
