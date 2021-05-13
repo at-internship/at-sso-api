@@ -1,5 +1,6 @@
 package com.agilethought.internship.sso.config;
 
+import com.agilethought.internship.sso.services.security.TokenStoreService;
 import com.agilethought.internship.sso.services.security.CustomTokenAccessEnhancer;
 import com.agilethought.internship.sso.services.security.CustomUserDetailsService;
 import com.agilethought.internship.sso.services.security.UserAuthProviderService;
@@ -28,6 +29,9 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     @Autowired
     private CustomUserDetailsService userDetailsService;
 
+    @Autowired
+    private TokenStoreService tokenStoreService;
+
     @Value("${sso.client.id}")
     private String clientId;
 
@@ -54,9 +58,9 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
         endpoints
-                .pathMapping("/oauth/token", "/api/v1/login")
+//                .pathMapping("/oauth/token", "/api/v1/login")
                 //.pathMapping("oauth/check_token", "/api/v1/tokens") Ale
-                //.tokenStore(tokenStoreService) Gras
+                .tokenStore(tokenStoreService)
                 .authenticationManager(userAuthProviderService)
                 .userDetailsService(userDetailsService)
                 .tokenEnhancer(getCustomTokenAccessTokenEnhancer());
