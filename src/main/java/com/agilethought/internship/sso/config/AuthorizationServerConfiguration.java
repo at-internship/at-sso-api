@@ -58,7 +58,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
         endpoints
-//                .pathMapping("/oauth/token", "/api/v1/login")
+                .pathMapping("/oauth/token", "/api/v1/login")
                 //.pathMapping("oauth/check_token", "/api/v1/tokens") Ale
                 .tokenStore(tokenStoreService)
                 .authenticationManager(userAuthProviderService)

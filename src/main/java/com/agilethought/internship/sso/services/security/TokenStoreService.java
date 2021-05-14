@@ -31,13 +31,11 @@ public class TokenStoreService implements TokenStore{
     @Autowired
     private MongoTemplate mongoTemplate;
 
-    private final static AuthenticationKeyGenerator AUTHENTICATION_KEY_GENERATOR =
-            new DefaultAuthenticationKeyGenerator();
+    private final AuthenticationKeyGenerator authenticationKeyGenerator = new DefaultAuthenticationKeyGenerator();
 
     public OAuth2Authentication readAuthentication(OAuth2AccessToken token) {
         return readAuthentication(token.getValue());
     }
-
 
     public OAuth2Authentication readAuthentication(String tokenId) {
         Query query = new Query();
@@ -55,7 +53,7 @@ public class TokenStoreService implements TokenStore{
         OAuth2AuthenticationAccessToken accessToken = new OAuth2AuthenticationAccessToken(
                 token,
                 authentication,
-                AUTHENTICATION_KEY_GENERATOR.extractKey(authentication));
+                authenticationKeyGenerator.extractKey(authentication));
         String tokenId = token.getValue();
         if (isNotEmpty(tokenId) && !accessTokenRepository.existsByTokenId(tokenId))
             mongoTemplate.save(accessToken);
@@ -100,7 +98,6 @@ public class TokenStoreService implements TokenStore{
 
     @Override
     public void removeRefreshToken(OAuth2RefreshToken oAuth2RefreshToken) {
-
     }
 
     @Override
@@ -109,8 +106,15 @@ public class TokenStoreService implements TokenStore{
     }
 
     @Override
-    public OAuth2AccessToken getAccessToken(OAuth2Authentication oAuth2Authentication) {
-        return null;
+    public OAuth2AccessToken getAccessToken(OAuth2Authentication authentication) {
+        String authenticationId = authenticationKeyGenerator.extractKey(authentication);
+        if (isEmpty(authenticationId)) {
+            return null;
+        }
+        Query query = new Query();
+        query.addCriteria(Criteria.where("authenticationId").is(authenticationId)).fields().exclude("authentication");
+        OAuth2AuthenticationAccessToken token = mongoTemplate.findOne(query, OAuth2AuthenticationAccessToken.class, "oauth2_access_token");
+        return token == null ? null : token.getOAuth2AccessToken();
     }
 
     @Override
