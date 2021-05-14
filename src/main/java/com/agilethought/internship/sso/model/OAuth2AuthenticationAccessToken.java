@@ -1,6 +1,8 @@
 package com.agilethought.internship.sso.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
@@ -10,6 +12,8 @@ import java.io.Serializable;
 
 @Document(collection = "oauth2_access_token")
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class OAuth2AuthenticationAccessToken implements Serializable {
     @Indexed
     private String id;
