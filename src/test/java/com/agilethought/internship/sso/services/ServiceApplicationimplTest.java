@@ -1,7 +1,5 @@
 package com.agilethought.internship.sso.services;
 
-import com.agilethought.internship.sso.dto.*;
-import com.agilethought.internship.sso.exception.UnauthorizedException;
 import com.agilethought.internship.sso.model.User;
 import com.agilethought.internship.sso.repository.RepositoryApplication;
 import com.agilethought.internship.sso.validator.user.LoginValidator;
@@ -10,8 +8,7 @@ import com.agilethought.internship.sso.validator.user.UpdateUserValidator;
 import ma.glasnost.orika.MapperFacade;
 import static com.agilethought.internship.sso.exception.errorhandling.ErrorMessage.NOT_FOUND_RESOURCE;
 import static com.agilethought.internship.sso.exception.errorhandling.ErrorMessage.USER;
-import static com.agilethought.internship.sso.exception.errorhandling.ErrorMessage.INVALID_CREDENTIALS;
-import static com.agilethought.internship.sso.exception.errorhandling.ErrorMessage.UNAVAILABLE_ENTITY;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -37,8 +34,7 @@ import com.agilethought.internship.sso.dto.UpdateUserRequest;
 import com.agilethought.internship.sso.dto.UpdateUserResponse;
 import com.agilethought.internship.sso.dto.UserDTO;
 import com.agilethought.internship.sso.exception.NotFoundException;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 public class ServiceApplicationimplTest {
 	@Mock
@@ -55,6 +51,9 @@ public class ServiceApplicationimplTest {
     
     @Mock
     private LoginValidator loginValidator;
+
+    @Mock
+	private PasswordEncoder passwordEncoder;
 
     @InjectMocks
     private ServiceApplicationimpl serviceApplicationimpl;
@@ -81,6 +80,7 @@ public class ServiceApplicationimplTest {
 
 		when(orikaMapperFacade.map(any(NewUserRequest.class), any())).thenReturn(mockCreateUser);
 		doNothing().when(newUserValidator).validate(any());
+		when(passwordEncoder.encode(anyString())).thenReturn("");
 		when(repositoryApplication.existsByEmail(anyString())).thenReturn(false);
 		when(repositoryApplication.save(any())).thenReturn(new User());
 		when(orikaMapperFacade.map(any(User.class), any())).thenReturn(new NewUserResponse());
@@ -121,6 +121,7 @@ public class ServiceApplicationimplTest {
         when(orikaMapperFacade.map(any(UpdateUserRequest.class), any()))
                 .thenReturn(mockUpdateUser);
         doNothing().when(updateUserValidator).validate(any());
+		when(passwordEncoder.encode(anyString())).thenReturn("");
         when(repositoryApplication.save(any())).thenReturn(new User());
         when(orikaMapperFacade.map(any(User.class), any())).thenReturn(new UpdateUserResponse());
         assertNotNull(serviceApplicationimpl.updateUserById(new UpdateUserRequest(), ""));

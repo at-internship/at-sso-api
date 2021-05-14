@@ -8,6 +8,7 @@ import com.agilethought.internship.sso.validator.user.NewUserValidator;
 import com.agilethought.internship.sso.validator.user.UpdateUserValidator;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
 import com.agilethought.internship.sso.mapper.UserMapping;
@@ -42,6 +43,9 @@ public class ServiceApplicationimpl implements ServiceApplication {
 
 	@Autowired
 	private UpdateUserValidator updateUserValidator;
+
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 	
 	@Autowired
 	private Validator<LoginRequest> loginValidator;
@@ -50,6 +54,7 @@ public class ServiceApplicationimpl implements ServiceApplication {
 		User user = orikaMapperFacade.map(request, User.class);
 		newUserValidator.validate(user);
 		setLetterCases(user);
+		user.setPassword(passwordEncoder.encode(request.getPassword()));
 		User savedUsers = repositoryApplication.save(user);
 		log.info("ServiceApplicationimpl.createUser- User saved  successfully with id: {}", user.getId());
 		return orikaMapperFacade.map(savedUsers, NewUserResponse.class);
@@ -89,6 +94,7 @@ public class ServiceApplicationimpl implements ServiceApplication {
 		User userUpdatedFields = orikaMapperFacade.map(request, User.class);
 		updateUserValidator.validate(userUpdatedFields);
 		setLetterCases(userUpdatedFields);
+		userUpdatedFields.setPassword(passwordEncoder.encode(request.getPassword()));
 		User updatedUser = repositoryApplication.save(userUpdatedFields);
 		return orikaMapperFacade.map(updatedUser, UpdateUserResponse.class);
 	}
