@@ -14,16 +14,28 @@ import lombok.extern.slf4j.Slf4j;
 import com.agilethought.internship.sso.mapper.UserMapping;
 import com.agilethought.internship.sso.model.User;
 import com.agilethought.internship.sso.repository.RepositoryApplication;
+import static com.agilethought.internship.sso.exception.errorhandling.ErrorMessage.NOT_FOUND_RESOURCE;
+import static com.agilethought.internship.sso.exception.errorhandling.ErrorMessage.USER;
+import static com.agilethought.internship.sso.services.PopulateFields.setLetterCases;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static com.agilethought.internship.sso.exception.errorhandling.ErrorMessage.INVALID_CREDENTIALS;
-import static com.agilethought.internship.sso.exception.errorhandling.ErrorMessage.UNAVAILABLE_ENTITY;
-import static com.agilethought.internship.sso.exception.errorhandling.ErrorMessage.USER;
-import static com.agilethought.internship.sso.exception.errorhandling.ErrorMessage.NOT_FOUND_RESOURCE;
-import static com.agilethought.internship.sso.services.PopulateFields.setLetterCases;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+
+import com.agilethought.internship.sso.dto.LoginRequest;
+import com.agilethought.internship.sso.dto.NewUserRequest;
+import com.agilethought.internship.sso.dto.NewUserResponse;
+import com.agilethought.internship.sso.dto.UpdateUserRequest;
+import com.agilethought.internship.sso.dto.UpdateUserResponse;
+import com.agilethought.internship.sso.dto.UserDTO;
+import com.agilethought.internship.sso.model.OAuth2AuthenticationAccessToken;
+import com.agilethought.internship.sso.repository.AccessTokenRepository;
 
 @Service
 @Slf4j
@@ -49,6 +61,9 @@ public class ServiceApplicationimpl implements ServiceApplication {
 	
 	@Autowired
 	private Validator<LoginRequest> loginValidator;
+	
+	@Autowired
+	private AccessTokenRepository tokenRepository;
 
 	public NewUserResponse createUser(NewUserRequest request) {
 		User user = orikaMapperFacade.map(request, User.class);
@@ -108,4 +123,28 @@ public class ServiceApplicationimpl implements ServiceApplication {
 				String.format(NOT_FOUND_RESOURCE, USER, id)
 		);
 	}
+	
+	@Override
+	public ResponseEntity<String> validateToken(String token) {
+		ResponseEntity<String> response = null;
+		OAuth2AuthenticationAccessToken tokenDB = null;
+		tokenDB = tokenRepository.findByTokenId(token);
+		response = new ResponseEntity<String>("Valid token", HttpStatus.OK);
+
+		if (StringUtils.isBlank(token))
+			throw new UnauthorizedException("Provided token can't be null nor empty");
+
+		if (tokenDB == null)
+			throw new UnauthorizedException("Provided token not found");
+
+		if (tokenDB.getOAuth2AccessToken() == null)
+			throw new UnauthorizedException(
+					"Ivalid access token information, please review token or create a new one.");
+
+		if (tokenDB.getOAuth2AccessToken().isExpired())
+			throw new UnauthorizedException("Provided token has expired");
+
+		return response;
+	}
+		
 }
