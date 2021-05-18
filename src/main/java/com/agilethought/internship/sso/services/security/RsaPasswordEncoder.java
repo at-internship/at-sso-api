@@ -37,7 +37,6 @@ public class RsaPasswordEncoder implements PasswordEncoder{
     @SneakyThrows
     @Override
     public String encode(CharSequence charSequence) {
-    	System.out.println("CharSequence: " + charSequence);
         return encrypt(charSequence.toString().trim(), publicKey);
     }
     
@@ -55,7 +54,6 @@ public class RsaPasswordEncoder implements PasswordEncoder{
     @Override
     public boolean matches(CharSequence receivedPassword, String dbPassword) {
         String decryptedDBPass = decrypt(dbPassword, privateKey);
-        System.out.println("THE PASSWORD END: " + decryptedDBPass);
         return decryptedDBPass.equals(receivedPassword.toString());
     }
 

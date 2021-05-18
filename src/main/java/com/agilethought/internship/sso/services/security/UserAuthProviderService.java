@@ -11,19 +11,20 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
 import com.agilethought.internship.sso.exception.AuthenticationException;
-import com.agilethought.internship.sso.exception.BadRequestException;
 import com.agilethought.internship.sso.model.User;
 import com.agilethought.internship.sso.repository.RepositoryApplication;
+
+import lombok.extern.log4j.Log4j2;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+@Log4j2
 @Component
 public class UserAuthProviderService implements AuthenticationManager {
 
@@ -36,9 +37,6 @@ public class UserAuthProviderService implements AuthenticationManager {
     @Autowired
     private CustomUserDetailsService userDetailsService;
     
-    @Value("${sso.enc.key.private}")
-    private String PRIVATE_KEY;
-
     private Authentication signInUser(User user) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(user.getEmail());
         Authentication authentication = new UsernamePasswordAuthenticationToken(
@@ -52,9 +50,9 @@ public class UserAuthProviderService implements AuthenticationManager {
     	String email = auth.getName();
         // RSA decrypt
         String password = auth.getCredentials().toString();
-        System.out.println("THE PASSWORD START: " + password);
+        log.info("THE PASSWORD START: " + password);
         password = rsaPasswordEncoder.decode(password);
-        System.out.println("THE PASSWORD END: " + password);
+        log.info("THE PASSWORD END: " + password);
         User user = repositoryApplication.findByEmail(email);
         System.out.println("matches: " + rsaPasswordEncoder.matches(password, user.getPassword()));
         if (user != null && rsaPasswordEncoder.matches(password, user.getPassword()))

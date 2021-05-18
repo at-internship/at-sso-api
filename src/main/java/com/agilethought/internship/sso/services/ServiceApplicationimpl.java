@@ -54,9 +54,6 @@ public class ServiceApplicationimpl implements ServiceApplication {
 	
 	@Autowired
 	private RsaPasswordEncoder rsaPasswordEncoder;
-	
-	@Value("${sso.enc.key.public}")
-	private String PUBLIC_KEY;
 
 	public NewUserResponse createUser(NewUserRequest request) {
 		User user = orikaMapperFacade.map(request, User.class);
