@@ -1,5 +1,6 @@
 package com.agilethought.internship.sso.services;
 
+import com.agilethought.internship.sso.exception.BadRequestException;
 import com.agilethought.internship.sso.exception.NotFoundException;
 import com.agilethought.internship.sso.dto.*;
 import com.agilethought.internship.sso.exception.UnauthorizedException;
@@ -15,8 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import com.agilethought.internship.sso.mapper.UserMapping;
 import com.agilethought.internship.sso.model.User;
 import com.agilethought.internship.sso.repository.RepositoryApplication;
-import com.agilethought.internship.sso.utils.RSAUtil;
-
+import com.agilethought.internship.sso.services.security.RsaPasswordEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -52,14 +52,22 @@ public class ServiceApplicationimpl implements ServiceApplication {
 	@Autowired
 	private Validator<LoginRequest> loginValidator;
 	
-	@Value("${PUBLIC_KEY}")
+	@Autowired
+	private RsaPasswordEncoder rsaPasswordEncoder;
+	
+	@Value("${sso.enc.key.public}")
 	private String PUBLIC_KEY;
 
 	public NewUserResponse createUser(NewUserRequest request) {
 		User user = orikaMapperFacade.map(request, User.class);
+		try{
+			user.setPassword(rsaPasswordEncoder.decode(request.getPassword()));
+		} catch (Exception e){
+			throw new BadRequestException("Error decrypting data");
+		}
 		newUserValidator.validate(user);
 		setLetterCases(user);
-		user.setPassword(passwordEncoder.encode(request.getPassword()));
+		user.setPassword(request.getPassword());
 		User savedUsers = repositoryApplication.save(user);
 		log.info("ServiceApplicationimpl.createUser- User saved  successfully with id: {}", user.getId());
 		return orikaMapperFacade.map(savedUsers, NewUserResponse.class);

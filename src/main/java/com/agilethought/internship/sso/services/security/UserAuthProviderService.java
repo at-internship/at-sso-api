@@ -11,6 +11,7 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
 import com.agilethought.internship.sso.exception.AuthenticationException;
+import com.agilethought.internship.sso.exception.BadRequestException;
 import com.agilethought.internship.sso.model.User;
 import com.agilethought.internship.sso.repository.RepositoryApplication;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import com.agilethought.internship.sso.utils.RSAUtil;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -31,12 +31,12 @@ public class UserAuthProviderService implements AuthenticationManager {
     private RepositoryApplication repositoryApplication;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    private RsaPasswordEncoder rsaPasswordEncoder;
 
     @Autowired
     private CustomUserDetailsService userDetailsService;
     
-    @Value("${PRIVATE_KEY}")
+    @Value("${sso.enc.key.private}")
     private String PRIVATE_KEY;
 
     private Authentication signInUser(User user) {
@@ -49,20 +49,15 @@ public class UserAuthProviderService implements AuthenticationManager {
 
     @Override
     public Authentication authenticate(Authentication auth) throws AuthenticationException {
-        String email = auth.getName();
+    	String email = auth.getName();
         // RSA decrypt
         String password = auth.getCredentials().toString();
         System.out.println("THE PASSWORD START: " + password);
-		password = RSAUtil.decrypt(password, PRIVATE_KEY);
-		
-		System.out.println("THE PASSWORD END: " + password);
-		
+        password = rsaPasswordEncoder.decode(password);
+        System.out.println("THE PASSWORD END: " + password);
         User user = repositoryApplication.findByEmail(email);
-        //System.out.println("user.getPassword: " + RSAUtil.decrypt(user.getPassword(), PRIVATE_KEY));
-        System.out.println("password: " + password);
-        System.out.println("matches: " + passwordEncoder.matches(password, user.getPassword()));
-        if (user != null && passwordEncoder.matches(password, RSAUtil.decrypt(user.getPassword(), PRIVATE_KEY)))
-        //if (user != null && user.getPassword().equals(password))
+        System.out.println("matches: " + rsaPasswordEncoder.matches(password, user.getPassword()));
+        if (user != null && rsaPasswordEncoder.matches(password, user.getPassword()))
             return signInUser(user);
         else
             throw new AuthenticationException(INVALID_CREDENTIALS);
