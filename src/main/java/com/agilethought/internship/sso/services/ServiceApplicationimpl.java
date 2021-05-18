@@ -35,7 +35,7 @@ import com.agilethought.internship.sso.dto.UpdateUserRequest;
 import com.agilethought.internship.sso.dto.UpdateUserResponse;
 import com.agilethought.internship.sso.dto.UserDTO;
 import com.agilethought.internship.sso.model.OAuth2AuthenticationAccessToken;
-import com.agilethought.internship.sso.repository.AccessTokenRepository;
+import com.agilethought.internship.sso.repository.OAuth2AccessTokenRepository;
 
 @Service
 @Slf4j
@@ -63,7 +63,7 @@ public class ServiceApplicationimpl implements ServiceApplication {
 	private Validator<LoginRequest> loginValidator;
 	
 	@Autowired
-	private AccessTokenRepository tokenRepository;
+	private OAuth2AccessTokenRepository tokenRepository;
 
 	public NewUserResponse createUser(NewUserRequest request) {
 		User user = orikaMapperFacade.map(request, User.class);

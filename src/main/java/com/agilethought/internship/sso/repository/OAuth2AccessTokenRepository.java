@@ -18,4 +18,6 @@ public interface OAuth2AccessTokenRepository extends
 
     void deleteByTokenId(String tokenId);
 
+	@Query("{'tokenId' : ?0}")
+	OAuth2AuthenticationAccessToken findByTokenId(String token);
 }
