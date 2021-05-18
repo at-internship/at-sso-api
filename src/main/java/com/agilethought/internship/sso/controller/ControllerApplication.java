@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.agilethought.internship.sso.dto.LoginRequest;
-import com.agilethought.internship.sso.dto.LoginResponse;
 import com.agilethought.internship.sso.dto.NewUserRequest;
 import com.agilethought.internship.sso.dto.NewUserResponse;
 import com.agilethought.internship.sso.dto.UpdateUserRequest;
@@ -99,4 +98,14 @@ public class ControllerApplication {
 	        return serviceApplication.getUserById(id);
 
 	    }
+	 
+	 @GetMapping("/tokens/{id}")
+		@ResponseStatus(HttpStatus.OK)
+		@ApiOperation(value = "Validates provided access token")
+		@ApiResponses(value = { @ApiResponse(code = 200, message = "Found valid token"),
+				@ApiResponse(code = 401, message = "Unauthorized"), @ApiResponse(code = 403, message = "Access prohibited")})
+		public ResponseEntity<String> validateToken(@PathVariable String id) {
+			return serviceApplication.validateToken(id);
+		}
+	 
 }
