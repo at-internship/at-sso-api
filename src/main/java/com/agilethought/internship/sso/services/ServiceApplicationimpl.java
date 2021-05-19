@@ -1,5 +1,6 @@
 package com.agilethought.internship.sso.services;
 
+import com.agilethought.internship.sso.exception.BadRequestException;
 import com.agilethought.internship.sso.exception.NotFoundException;
 import com.agilethought.internship.sso.dto.*;
 import com.agilethought.internship.sso.exception.UnauthorizedException;
@@ -8,13 +9,14 @@ import com.agilethought.internship.sso.validator.user.NewUserValidator;
 import com.agilethought.internship.sso.validator.user.UpdateUserValidator;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
 import com.agilethought.internship.sso.mapper.UserMapping;
 import com.agilethought.internship.sso.model.User;
 import com.agilethought.internship.sso.repository.RepositoryApplication;
-
+import com.agilethought.internship.sso.services.security.RsaPasswordEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -45,16 +47,22 @@ public class ServiceApplicationimpl implements ServiceApplication {
 	private UpdateUserValidator updateUserValidator;
 
 	@Autowired
-	private PasswordEncoder passwordEncoder;
+	private RsaPasswordEncoder passwordEncoder;
 	
 	@Autowired
 	private Validator<LoginRequest> loginValidator;
+	
 
 	public NewUserResponse createUser(NewUserRequest request) {
 		User user = orikaMapperFacade.map(request, User.class);
+		try{
+			user.setPassword(passwordEncoder.decode(request.getPassword()));
+		} catch (Exception e){
+			throw new BadRequestException("Error decrypting data");
+		}
 		newUserValidator.validate(user);
 		setLetterCases(user);
-		user.setPassword(passwordEncoder.encode(request.getPassword()));
+		user.setPassword(request.getPassword());
 		User savedUsers = repositoryApplication.save(user);
 		log.info("ServiceApplicationimpl.createUser- User saved  successfully with id: {}", user.getId());
 		return orikaMapperFacade.map(savedUsers, NewUserResponse.class);
@@ -92,9 +100,14 @@ public class ServiceApplicationimpl implements ServiceApplication {
 	public UpdateUserResponse updateUserById(UpdateUserRequest request, String id) {
 		request.setId(id);
 		User userUpdatedFields = orikaMapperFacade.map(request, User.class);
+		try{
+			userUpdatedFields.setPassword(passwordEncoder.decode(request.getPassword()));
+		} catch (Exception e){
+			throw new BadRequestException("Error decrypting data");
+		}
 		updateUserValidator.validate(userUpdatedFields);
 		setLetterCases(userUpdatedFields);
-		userUpdatedFields.setPassword(passwordEncoder.encode(request.getPassword()));
+		userUpdatedFields.setPassword(request.getPassword());
 		User updatedUser = repositoryApplication.save(userUpdatedFields);
 		return orikaMapperFacade.map(updatedUser, UpdateUserResponse.class);
 	}

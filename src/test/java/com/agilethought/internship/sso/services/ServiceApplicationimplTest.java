@@ -2,6 +2,7 @@ package com.agilethought.internship.sso.services;
 
 import com.agilethought.internship.sso.model.User;
 import com.agilethought.internship.sso.repository.RepositoryApplication;
+import com.agilethought.internship.sso.services.security.RsaPasswordEncoder;
 import com.agilethought.internship.sso.validator.user.LoginValidator;
 import com.agilethought.internship.sso.validator.user.NewUserValidator;
 import com.agilethought.internship.sso.validator.user.UpdateUserValidator;
@@ -24,6 +25,7 @@ import java.util.List;
 import java.util.Optional;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -35,7 +37,9 @@ import com.agilethought.internship.sso.dto.UpdateUserResponse;
 import com.agilethought.internship.sso.dto.UserDTO;
 import com.agilethought.internship.sso.exception.NotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@RunWith(SpringJUnit4ClassRunner.class)
 public class ServiceApplicationimplTest {
 	@Mock
 	private RepositoryApplication repositoryApplication;
@@ -53,7 +57,7 @@ public class ServiceApplicationimplTest {
     private LoginValidator loginValidator;
 
     @Mock
-	private PasswordEncoder passwordEncoder;
+	private RsaPasswordEncoder passwordEncoder;
 
     @InjectMocks
     private ServiceApplicationimpl serviceApplicationimpl;
@@ -77,14 +81,22 @@ public class ServiceApplicationimplTest {
 		mockCreateUser.setFirstName("");
 		mockCreateUser.setLastName("");
 		mockCreateUser.setEmail("");
-
+		
+		String encryptedPassword = "cKtW2JkL0STGZ6uhs/8R/isp9hGPtE49GVLQQVPGMz/UVPlvCEuLP7ZofRmCBFlXJdeeOraUIC4qWPt+yCC/ndlYRu2vW9MituTxSYgq+CU50TiB3/4u4Qn1Iv2I34X11ybyMPT30uZXpEshsf7ZxNdk9cv19wat3Abn5mNwqWZomyCiMvyz7yc0o50AM6KpCTIDAZ5fyxFjwEo0QfxzMoxQjOc3qlmF35b34hbygC+vxgo0Aq4cEv+upcN/8vfGFsCdjOS87byRiy1HmBuYSm1ieY7IJlM5/N0WMhLHku07XrGJAUnTN4LhfJtPJSSRjxe4aqPpvbElYorqFTdbdQ==";
+		
 		when(orikaMapperFacade.map(any(NewUserRequest.class), any())).thenReturn(mockCreateUser);
 		doNothing().when(newUserValidator).validate(any());
 		when(passwordEncoder.encode(anyString())).thenReturn("");
 		when(repositoryApplication.existsByEmail(anyString())).thenReturn(false);
 		when(repositoryApplication.save(any())).thenReturn(new User());
 		when(orikaMapperFacade.map(any(User.class), any())).thenReturn(new NewUserResponse());
-		assertNotNull(serviceApplicationimpl.createUser(new NewUserRequest()));
+		NewUserRequest newUserRequest = new NewUserRequest();
+		newUserRequest.setFirstName("John");
+		newUserRequest.setLastName("Petrucci");
+		newUserRequest.setPassword(encryptedPassword);
+		newUserRequest.setEmail("test-at@gmail.com");
+		newUserRequest.setStatus(1);
+		assertNotNull(serviceApplicationimpl.createUser(newUserRequest));
 	}
 
 	@Test
