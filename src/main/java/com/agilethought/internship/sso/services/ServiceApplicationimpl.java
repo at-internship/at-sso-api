@@ -47,18 +47,16 @@ public class ServiceApplicationimpl implements ServiceApplication {
 	private UpdateUserValidator updateUserValidator;
 
 	@Autowired
-	private PasswordEncoder passwordEncoder;
+	private RsaPasswordEncoder passwordEncoder;
 	
 	@Autowired
 	private Validator<LoginRequest> loginValidator;
 	
-	@Autowired
-	private RsaPasswordEncoder rsaPasswordEncoder;
 
 	public NewUserResponse createUser(NewUserRequest request) {
 		User user = orikaMapperFacade.map(request, User.class);
 		try{
-			user.setPassword(rsaPasswordEncoder.decode(request.getPassword()));
+			user.setPassword(passwordEncoder.decode(request.getPassword()));
 		} catch (Exception e){
 			throw new BadRequestException("Error decrypting data");
 		}
@@ -102,9 +100,14 @@ public class ServiceApplicationimpl implements ServiceApplication {
 	public UpdateUserResponse updateUserById(UpdateUserRequest request, String id) {
 		request.setId(id);
 		User userUpdatedFields = orikaMapperFacade.map(request, User.class);
+		try{
+			userUpdatedFields.setPassword(passwordEncoder.decode(request.getPassword()));
+		} catch (Exception e){
+			throw new BadRequestException("Error decrypting data");
+		}
 		updateUserValidator.validate(userUpdatedFields);
 		setLetterCases(userUpdatedFields);
-		userUpdatedFields.setPassword(passwordEncoder.encode(request.getPassword()));
+		userUpdatedFields.setPassword(request.getPassword());
 		User updatedUser = repositoryApplication.save(userUpdatedFields);
 		return orikaMapperFacade.map(updatedUser, UpdateUserResponse.class);
 	}

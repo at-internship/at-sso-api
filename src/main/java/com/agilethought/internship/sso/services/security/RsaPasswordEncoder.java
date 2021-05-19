@@ -29,20 +29,28 @@ public class RsaPasswordEncoder implements PasswordEncoder{
     private KeyFactory keyFactory;
 
     @Value("${sso.enc.key.public}")
-    private String publicKey;
+    private String PUBLIC_KEY;
 
     @Value("${sso.enc.key.private}")
-    private String privateKey;
-
+    private String PRIVATE_KEY;
+    
+    public RsaPasswordEncoder() { }
+    
+    public RsaPasswordEncoder(String PUBLIC_KEY, String PRIVATE_KEY) {
+		this.PUBLIC_KEY = PUBLIC_KEY;
+		this.PRIVATE_KEY = PRIVATE_KEY;
+	}
+    
+    
     @SneakyThrows
     @Override
     public String encode(CharSequence charSequence) {
-        return encrypt(charSequence.toString().trim(), publicKey);
+        return encrypt(charSequence.toString().trim(), PUBLIC_KEY);
     }
     
     public String decode(String encryptedString) {
         try {
-			return decrypt(encryptedString, privateKey);
+			return decrypt(encryptedString, PRIVATE_KEY);
 		} catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | IllegalBlockSizeException
 				| BadPaddingException e) {
 			
@@ -53,7 +61,7 @@ public class RsaPasswordEncoder implements PasswordEncoder{
     @SneakyThrows
     @Override
     public boolean matches(CharSequence receivedPassword, String dbPassword) {
-        String decryptedDBPass = decrypt(dbPassword, privateKey);
+        String decryptedDBPass = decrypt(dbPassword, PRIVATE_KEY);
         return decryptedDBPass.equals(receivedPassword.toString());
     }
 

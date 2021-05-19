@@ -48,13 +48,9 @@ public class UserAuthProviderService implements AuthenticationManager {
     @Override
     public Authentication authenticate(Authentication auth) throws AuthenticationException {
     	String email = auth.getName();
-        // RSA decrypt
         String password = auth.getCredentials().toString();
-        log.info("THE PASSWORD START: " + password);
         password = rsaPasswordEncoder.decode(password);
-        log.info("THE PASSWORD END: " + password);
         User user = repositoryApplication.findByEmail(email);
-        System.out.println("matches: " + rsaPasswordEncoder.matches(password, user.getPassword()));
         if (user != null && rsaPasswordEncoder.matches(password, user.getPassword()))
             return signInUser(user);
         else
