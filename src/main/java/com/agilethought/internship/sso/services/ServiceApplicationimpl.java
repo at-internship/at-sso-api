@@ -9,11 +9,15 @@ import com.agilethought.internship.sso.validator.user.UpdateUserValidator;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.common.OAuth2AccessToken;
+import org.springframework.security.oauth2.common.exceptions.InvalidTokenException;
 import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
 import com.agilethought.internship.sso.mapper.UserMapping;
 import com.agilethought.internship.sso.model.User;
 import com.agilethought.internship.sso.repository.RepositoryApplication;
+import com.agilethought.internship.sso.services.security.TokenStoreService;
+
 import static com.agilethought.internship.sso.exception.errorhandling.ErrorMessage.NOT_FOUND_RESOURCE;
 import static com.agilethought.internship.sso.exception.errorhandling.ErrorMessage.USER;
 import static com.agilethought.internship.sso.services.PopulateFields.setLetterCases;
@@ -63,7 +67,7 @@ public class ServiceApplicationimpl implements ServiceApplication {
 	private Validator<LoginRequest> loginValidator;
 	
 	@Autowired
-	private OAuth2AccessTokenRepository tokenRepository;
+	private TokenStoreService tokenStoreService;
 
 	public NewUserResponse createUser(NewUserRequest request) {
 		User user = orikaMapperFacade.map(request, User.class);
@@ -127,21 +131,22 @@ public class ServiceApplicationimpl implements ServiceApplication {
 	@Override
 	public ResponseEntity<String> validateToken(String token) {
 		ResponseEntity<String> response = null;
-		OAuth2AuthenticationAccessToken tokenDB = null;
-		tokenDB = tokenRepository.findByTokenId(token);
 		response = new ResponseEntity<String>("Valid token", HttpStatus.OK);
-
+		OAuth2AccessToken dbToken = null;
+		
 		if (StringUtils.isBlank(token))
 			throw new UnauthorizedException("Provided token can't be null nor empty");
-
-		if (tokenDB == null)
+		
+		try {
+			dbToken = tokenStoreService.readAccessToken(token);
+		} catch (InvalidTokenException e) {
+			throw new UnauthorizedException("Provided token not found");
+		}
+		
+		if (dbToken == null)
 			throw new UnauthorizedException("Provided token not found");
 
-		if (tokenDB.getOAuth2AccessToken() == null)
-			throw new UnauthorizedException(
-					"Ivalid access token information, please review token or create a new one.");
-
-		if (tokenDB.getOAuth2AccessToken().isExpired())
+		if (dbToken.isExpired())
 			throw new UnauthorizedException("Provided token has expired");
 
 		return response;
