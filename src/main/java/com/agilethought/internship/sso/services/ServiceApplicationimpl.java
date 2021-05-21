@@ -8,15 +8,23 @@ import com.agilethought.internship.sso.validator.Validator;
 import com.agilethought.internship.sso.validator.user.NewUserValidator;
 import com.agilethought.internship.sso.validator.user.UpdateUserValidator;
 import ma.glasnost.orika.MapperFacade;
+
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.common.OAuth2AccessToken;
+import org.springframework.security.oauth2.common.exceptions.InvalidTokenException;
 import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
 import com.agilethought.internship.sso.mapper.UserMapping;
 import com.agilethought.internship.sso.model.User;
 import com.agilethought.internship.sso.repository.RepositoryApplication;
 import com.agilethought.internship.sso.services.security.RsaPasswordEncoder;
+import com.agilethought.internship.sso.services.security.TokenStoreService;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -52,6 +60,8 @@ public class ServiceApplicationimpl implements ServiceApplication {
 	@Autowired
 	private Validator<LoginRequest> loginValidator;
 	
+	@Autowired
+	private TokenStoreService tokenStoreService;
 
 	public NewUserResponse createUser(NewUserRequest request) {
 		User user = orikaMapperFacade.map(request, User.class);
@@ -121,4 +131,29 @@ public class ServiceApplicationimpl implements ServiceApplication {
 				String.format(NOT_FOUND_RESOURCE, USER, id)
 		);
 	}
+	
+	@Override
+	public ResponseEntity<String> validateToken(String token) {
+		ResponseEntity<String> response = null;
+		response = new ResponseEntity<String>("Valid token", HttpStatus.OK);
+		OAuth2AccessToken dbToken = null;
+		
+		if (StringUtils.isBlank(token))
+			throw new UnauthorizedException("Provided token can't be null nor empty");
+		
+		try {
+			dbToken = tokenStoreService.readAccessToken(token);
+		} catch (InvalidTokenException e) {
+			throw new UnauthorizedException("Provided token not found");
+		}
+		
+		if (dbToken == null)
+			throw new UnauthorizedException("Provided token not found");
+
+		if (dbToken.isExpired())
+			throw new UnauthorizedException("Provided token has expired");
+
+		return response;
+	}
+		
 }

@@ -4,6 +4,8 @@ import com.agilethought.internship.sso.dto.*;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
+
 public interface ServiceApplication {
 
 	List<UserDTO> getUsersByEmail(String email) ;
@@ -17,4 +19,6 @@ public interface ServiceApplication {
 	UpdateUserResponse updateUserById(UpdateUserRequest request, String id);
 
 	UserDTO getUserById(String id);
+	
+	ResponseEntity<String> validateToken(String token);
 }
