@@ -1,29 +1,35 @@
 package com.agilethought.internship.sso.controller;
 
-import com.agilethought.internship.sso.dto.NewUserResponse;
-import com.agilethought.internship.sso.dto.UpdateUserRequest;
-import com.agilethought.internship.sso.dto.UpdateUserResponse;
-import com.agilethought.internship.sso.dto.*;
-import com.agilethought.internship.sso.services.ServiceApplication;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.ArrayList;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.ArrayList;
+import com.agilethought.internship.sso.dto.NewUserResponse;
+import com.agilethought.internship.sso.dto.UpdateUserRequest;
+import com.agilethought.internship.sso.dto.UpdateUserResponse;
+import com.agilethought.internship.sso.dto.UserDTO;
+import com.agilethought.internship.sso.services.ServiceApplication;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
-import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
+@ActiveProfiles(value="test")
 @RunWith(SpringJUnit4ClassRunner.class)
 @AutoConfigureMockMvc(addFilters = false)
 @WebMvcTest(ControllerApplication.class)
