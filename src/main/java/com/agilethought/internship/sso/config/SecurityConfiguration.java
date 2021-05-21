@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 
 @Configuration
 @EnableWebSecurity
@@ -17,10 +18,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
-		http.csrf()
+		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+		.and().csrf()
 				.disable()
 				.authorizeRequests()
-				.antMatchers(TOKEN_CREATION_ENDPOINT).permitAll();
+				.antMatchers(TOKEN_CREATION_ENDPOINT).permitAll()
+				.antMatchers("/api/v1/users/**").authenticated()
+		        .antMatchers("/api/v1/tokens/**").authenticated()
+		        .and()
+		        .httpBasic();
 	}
 
 	@Bean

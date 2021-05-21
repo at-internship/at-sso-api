@@ -1,6 +1,5 @@
 package com.agilethought.internship.sso.controller;
 
-import com.agilethought.internship.sso.dto.LoginResponse;
 import com.agilethought.internship.sso.dto.NewUserResponse;
 import com.agilethought.internship.sso.dto.UpdateUserRequest;
 import com.agilethought.internship.sso.dto.UpdateUserResponse;
@@ -9,9 +8,9 @@ import com.agilethought.internship.sso.services.ServiceApplication;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -26,6 +25,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
+@AutoConfigureMockMvc(addFilters = false)
 @WebMvcTest(ControllerApplication.class)
 public class ControllerApplicationTest {
 
@@ -34,9 +34,6 @@ public class ControllerApplicationTest {
 
     @MockBean
     private ServiceApplication serviceApplication;
-
-    @MockBean
-    private AuthenticationManager authenticationManagerBean;
 
     private static final String REQUEST_MAPPING = "/api/v1";
 
