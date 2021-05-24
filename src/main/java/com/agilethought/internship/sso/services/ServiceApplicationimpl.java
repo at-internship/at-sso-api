@@ -149,7 +149,10 @@ public class ServiceApplicationimpl implements ServiceApplication {
 		
 		if (dbToken == null)
 			throw new UnauthorizedException("Provided token not found");
-
+		
+		if (dbToken.getTokenType() == "wildcard")
+			return response;
+			
 		if (dbToken.isExpired())
 			throw new UnauthorizedException("Provided token has expired");
 
