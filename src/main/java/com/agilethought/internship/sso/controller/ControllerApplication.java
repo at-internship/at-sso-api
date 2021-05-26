@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -84,17 +85,6 @@ public class ControllerApplication {
 		return serviceApplication.updateUserById(request, id);
 
 	}
-	@ResponseStatus(HttpStatus.OK)
-    @PostMapping(value = "/login")
-    @ApiOperation(value = "Let the user log into the application")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Search in the database without parameters"),
-            @ApiResponse(code = 401, message = "Unauthorized"),
-            @ApiResponse(code = 403, message = "Access prohibited"),
-    })
-    public LoginResponse loginUser(@RequestBody LoginRequest loginRequest) {
-    	return serviceApplication.loginUser(loginRequest);
-    }
 	
 	 @GetMapping("/users/{id}")
 	    @ResponseStatus(HttpStatus.OK)
@@ -110,4 +100,14 @@ public class ControllerApplication {
 	        return serviceApplication.getUserById(id);
 
 	    }
+	 
+	 @GetMapping("/tokens/{id}")
+		@ResponseStatus(HttpStatus.OK)
+		@ApiOperation(value = "Validates provided access token")
+		@ApiResponses(value = { @ApiResponse(code = 200, message = "Found valid token"),
+				@ApiResponse(code = 401, message = "Unauthorized"), @ApiResponse(code = 403, message = "Access prohibited")})
+		public ResponseEntity<String> validateToken(@PathVariable String id) {
+			return serviceApplication.validateToken(id);
+		}
+	 
 }
